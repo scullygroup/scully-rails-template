@@ -1,5 +1,6 @@
-# suspenders.rb
-# from Nathan Esquenazi
+# Scully Group Rails Template
+# http://scullytown.com
+#
 # based on Suspenders by Thoughtbot
 
 #====================
@@ -23,6 +24,18 @@ gem 'thoughtbot-quietbacktrace'
 gem 'thoughtbot-paperclip'
 gem 'newrelic_rpm'
 gem 'haml'
+gem 'binarylogic-searchlogic' #TODO be sure to vendor
+
+# TODO Should this be here or should I use a separate template? 
+# if yes?("Do you want to use Admin/User Logins?")  
+#   gem 'rubyist-aasm'
+#   gem 'binarylogic-authlogic'
+#   generate :auth #TODO write generator that sets up all user auth in controllers, etc
+# end
+
+if yes?("Do you want to use Model Versioning?")  
+  gem 'vestal_versions' #TODO vendor in env and setup model attributes, http://github.com/laserlemon/vestal_versions
+end
 
 freeze!
 rake("gems:install", :sudo => true)
@@ -32,7 +45,7 @@ rake("gems:unpack")
 # APP
 #====================
 
-file 'app/controllers/application_controller.rb', 
+file 'app/controllers/application_controller.rb', #TODO user auth methods, sessions, filter_parameter_logging if User Auth is going here
 %q{class ApplicationController < ActionController::Base
 
   helper :all
@@ -641,7 +654,6 @@ db/schema.rb
 tmp/**/*
 doc/api
 doc/app
-config/database.yml
 END
 git :init
 git :add => "."
