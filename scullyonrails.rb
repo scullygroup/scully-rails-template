@@ -2,6 +2,9 @@
 # http://scullytown.com
 #
 # based on Suspenders by Thoughtbot
+#
+# This adds a few more gems/plugins as noted below
+# Also, additional HAML and SASS support is added
 
 #====================
 # PLUGINS
@@ -15,7 +18,7 @@ plugin 'jrails', "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
 # GEMS
 #====================
 
-gem 'RedCloth', :lib => 'redcloth', :version => '~> 4.2.2'
+gem 'RedCloth', :lib => 'redcloth'
 gem 'mislav-will_paginate'
 gem 'mocha'
 gem 'thoughtbot-factory_girl'
@@ -24,14 +27,12 @@ gem 'thoughtbot-quietbacktrace'
 gem 'thoughtbot-paperclip'
 gem 'newrelic_rpm'
 gem 'haml'
-gem 'binarylogic-searchlogic' #TODO be sure to vendor
+gem 'binarylogic-searchlogic'
 
-# TODO Should this be here or should I use a separate template? 
-# if yes?("Do you want to use Admin/User Logins?")  
-#   gem 'rubyist-aasm'
-#   gem 'binarylogic-authlogic'
-#   generate :auth #TODO write generator that sets up all user auth in controllers, etc
-# end
+# Image cropping?
+if yes?("Do you want to use image cropping?")
+  generate :jcrop #TODO write generator that sets up image cropping
+end
 
 if yes?("Do you want to use Model Versioning?")  
   gem 'vestal_versions' #TODO vendor in env and setup model attributes, http://github.com/laserlemon/vestal_versions
@@ -45,7 +46,7 @@ rake("gems:unpack")
 # APP
 #====================
 
-file 'app/controllers/application_controller.rb', #TODO user auth methods, sessions, filter_parameter_logging if User Auth is going here
+file 'app/controllers/application_controller.rb',
 %q{class ApplicationController < ActionController::Base
 
   helper :all
@@ -95,10 +96,15 @@ file 'app/views/layouts/application.html.erb',
 #====================
 
 initializer 'action_mailer_configs.rb', 
-%q{ActionMailer::Base.smtp_settings = {
-    :address => "smtp.thoughtbot.com",
-    :port    => 25,
-    :domain  => "thoughtbot.com"
+%q{require 'smtp_tls'
+ActionMailer::Base.smtp_settings = {
+  :tls => true,
+  :address => "smtp.gmail.com" ,
+  :port => 587,
+  :domain => "scullytown.com" ,
+  :authentication => :plain,
+  :user_name => "admin@scullytown.com",
+  :password => "XXXXXXXXX"
 }
 }
 
@@ -182,11 +188,8 @@ file 'config/environment.rb',
 # Just use the same name as the svn repo.
 PROJECT_NAME = "CHANGEME"
 
-throw "The project's name in environment.rb is blank" if PROJECT_NAME.empty?
-throw "Project name (#{PROJECT_NAME}) must_be_like_this" unless PROJECT_NAME =~ /^[a-z_]*$/
-
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.0' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -226,6 +229,9 @@ Rails::Initializer.run do |config|
              :source => 'http://gems.github.com'
   config.gem 'haml',
              :version => '2.0.9'
+  config.gem 'thoughtbot-paperclip', 
+            :lib => 'paperclip', 
+            :source => 'http://gems.github.com'                        
   
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
@@ -276,7 +282,7 @@ load 'config/deploy'
 }
 
 file 'config/database.yml', 
-%q{<% PASSWORD_FILE = File.join(RAILS_ROOT, '..', '..', 'shared', 'config', 'dbpassword') %>
+%q{
 
 development:
   adapter: mysql
@@ -285,7 +291,8 @@ development:
   password: 
   host: localhost
   encoding: utf8
-  
+  socket: /var/mysql/mysql.sock
+    
 test:
   adapter: mysql
   database: <%= PROJECT_NAME %>_test
@@ -298,27 +305,32 @@ staging:
   adapter: mysql
   database: <%= PROJECT_NAME %>_staging
   username: <%= PROJECT_NAME %>
-  password: <%= File.read(PASSWORD_FILE).chomp if File.readable? PASSWORD_FILE %>
+  password:
   host: localhost
   encoding: utf8
-  socket: /var/lib/mysql/mysql.sock
+  socket: /var/run/mysqld/mysqld.sock
   
 production:
   adapter: mysql
   database: <%= PROJECT_NAME %>_production
   username: <%= PROJECT_NAME %>
-  password: <%= File.read(PASSWORD_FILE).chomp if File.readable? PASSWORD_FILE %>
+  password:
   host: localhost
   encoding: utf8
-  socket: /var/lib/mysql/mysql.sock
+  socket: /var/run/mysqld/mysqld.sock
 }
 
 file 'config/deploy.rb', 
-%q{set :stages, %w(staging production)
+%q{set :stages, %w(staging prod)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage'
 
-before "deploy:setup", "db:password"
+namespace :deploy do
+ [:start, :stop, :restart, :finalize_update, :migrate, :migrations, :cold].each do |t|
+   desc "#{t} task is a no-op with mod_rails"
+   task t, :roles => :app do ; end
+ end
+end
 
 namespace :deploy do
   desc "Default deploy - updated to run migrations"
@@ -329,108 +341,175 @@ namespace :deploy do
     symlink
     restart
   end
-  desc "Start the mongrels"
-  task :start do
-    send(run_method, "cd #{deploy_to}/#{current_dir} && #{mongrel_rails} cluster::start --config #{mongrel_cluster_config}")
-  end
-  desc "Stop the mongrels"
-  task :stop do
-    send(run_method, "cd #{deploy_to}/#{current_dir} && #{mongrel_rails} cluster::stop --config #{mongrel_cluster_config}")
-  end
-  desc "Restart the mongrels"
-  task :restart do
-    send(run_method, "cd #{deploy_to}/#{current_dir} && #{mongrel_rails} cluster::restart --config #{mongrel_cluster_config}")
-  end
   desc "Run this after every successful deployment" 
   task :after_default do
     cleanup
   end
 end
-
-namespace :db do
-  desc "Create database password in shared path" 
-  task :password do
-    set :db_password, Proc.new { Capistrano::CLI.password_prompt("Remote database password: ") }
-    run "mkdir -p #{shared_path}/config" 
-    put db_password, "#{shared_path}/config/dbpassword" 
-  end
-end
 }
 
 file 'config/deploy/staging.rb', 
-%q{# For migrations
-set :rails_env, 'staging'
+%q{################################################################################################################
+# This deploy recipe will deploy a project from a GitHub repo to a Webbynode VPS server
+#
+# Assumptions:
+#   * You are using WebbyNode for hosting, but this would most likely work on any VPS, such as Slicehost
+#   * Your deployment directory is located in /home
+#   * This is a Rails project and will use the staging environment
+#
+#################################################################################################################
+#
+# Change this to the name of the project.  It should match the name of the Git repo.
+# This will set the name of the project directory and become the subdomain
+set :project, 'MY-PROJECT' 
 
-# Who are we?
-set :application, 'CHANGEME'
-set :repository, "git@github.com:thoughtbot/#{application}.git"
+set :github_user, "USERNAME" # Your GitHub username
+set :domain_name, "MYDOMAIN.COM" # should be something like mydomain.com
+set :user, 'USERNAME' # Webbynode username
+set :domain, 'XXX.XX.XXX.XX' # Webbynode IP address
+
+#### You shouldn't need to change anything below ########################################################
+default_run_options[:pty] = true
+
+set :repository,  "git@github.com:#{github_user}/#{project}.git" #GitHub clone URL
 set :scm, "git"
+set :scm_passphrase, "" # This is the passphrase for the ssh key on the server deployed to
+set :branch, "master"
+set :scm_verbose, true
+set :subdomain, "#{project}.#{domain_name}"
+set :applicationdir, "/home/#{project}"
+
+set :keep_releases, 1
+
+# Don't change this stuff, but you may want to set shared files at the end of the file ##################
+# deploy config
+set :deploy_to, applicationdir
 set :deploy_via, :remote_cache
-set :branch, "staging"
+ 
+# roles (servers)
+role :app, domain
+role :web, domain
+role :db,  domain, :primary => true
 
-# Where to deploy to?
-role :web, "staging.example.com"
-role :app, "staging.example.com"
-role :db,  "staging.example.com", :primary => true
+namespace :deploy do
+  desc "Restarting mod_rails with restart.txt"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
 
-# Deploy details
-set :user, "#{application}"
-set :deploy_to, "/home/#{user}/apps/#{application}"
+  [:start, :stop].each do |t|
+    desc "#{t} task is a no-op with mod_rails"
+    task t, :roles => :app do ; end
+  end
+end
+
+namespace :webbynode do
+  desc "Setup New Project"
+  task :setup do
+    config_vhost
+    apache_reload
+  end
+  
+  desc "Configure VHost"
+  task :config_vhost do
+    vhost_config =<<-EOF
+<VirtualHost *:80>
+  ServerName #{subdomain}
+  RailsEnv staging
+  DocumentRoot #{deploy_to}/current/public
+</VirtualHost>
+    EOF
+    put vhost_config, "src/vhost_config"
+    sudo "mv src/vhost_config /etc/apache2/sites-available/#{project}"
+    sudo "chown root:root /etc/apache2/sites-available/#{project}"
+    sudo "a2ensite #{project}"
+    sudo "mkdir /home/#{project}"
+    sudo "chown #{user}:#{user} /home/#{project}"
+  end
+  
+  desc "Reload Apache"
+  task :apache_reload do
+    sudo "/etc/init.d/apache2 reload"
+  end
+end
+
+# additional settings
+#default_run_options[:pty] = true  # Forgo errors when deploying from windows
+#ssh_options[:keys] = %w(/Path/To/id_rsa)            # If you are using ssh_keys
+#set :chmod755, "app config db lib public vendor script script/* public/disp*"
 set :use_sudo, false
-set :checkout, 'export'
-
-# We need to know how to use mongrel
-set :mongrel_rails, '/usr/local/bin/mongrel_rails'
-set :mongrel_cluster_config, "#{deploy_to}/#{current_dir}/config/mongrel_cluster_staging.yml"
+ 
+# Optional tasks ##########################################################################################
+# for use with shared files (e.g. config files)
+# after "deploy:update_code" do
+#   run "ln -s #{shared_path}/uploads #{release_path}/public"
+# end
 }
 
 file 'config/deploy/production.rb', 
-%q{# For migrations
-set :rails_env, 'production'
+%q{################################################################################################################
+# This deploy recipe will deploy a project from a GitHub repo to a Webbynode VPS server
+#
+# Assumptions:
+#   * You are using WebbyNode for hosting, but this would most likely work on any VPS, such as Slicehost
+#   * Your deployment directory is located in /home
+#   * This is a Rails project and will use the production environment
+#
+#################################################################################################################
+#
+# Change this to the name of the project.  It should match the name of the Git repo.
+# This will set the name of the project directory and become the subdomain
+set :project, 'MY-PROJECT' 
 
-# Who are we?
-set :application, 'CHANGEME'
-set :repository, "git@github.com:thoughtbot/#{application}.git"
+set :github_user, "USERNAME" # Your GitHub username
+set :user, 'USERNAME' # Webbynode username
+set :domain, 'XXX.XX.XXX.XX' # Webbynode IP address
+
+#### You shouldn't need to change anything below ########################################################
+default_run_options[:pty] = true
+
+set :repository,  "git@github.com:#{github_user}/#{project}.git" #GitHub clone URL
 set :scm, "git"
+set :scm_passphrase, "" # This is the passphrase for the ssh key on the server deployed to
+set :branch, "master"
+set :scm_verbose, true
+set :applicationdir, "/home/#{project}"
+
+set :keep_releases, 1
+
+# Don't change this stuff, but you may want to set shared files at the end of the file ##################
+# deploy config
+set :deploy_to, applicationdir
 set :deploy_via, :remote_cache
-set :branch, "production"
+ 
+# roles (servers)
+role :app, domain
+role :web, domain
+role :db,  domain, :primary => true
 
-# Where to deploy to?
-role :web, "production.example.com"
-role :app, "production.example.com"
-role :db,  "production.example.com", :primary => true
+namespace :deploy do
+  desc "Restarting mod_rails with restart.txt"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
 
-# Deploy details
-set :user, "#{application}"
-set :deploy_to, "/home/#{user}/apps/#{application}"
+  [:start, :stop].each do |t|
+    desc "#{t} task is a no-op with mod_rails"
+    task t, :roles => :app do ; end
+  end
+end
+
+# additional settings
+#default_run_options[:pty] = true  # Forgo errors when deploying from windows
+#ssh_options[:keys] = %w(/Path/To/id_rsa)            # If you are using ssh_keys
+#set :chmod755, "app config db lib public vendor script script/* public/disp*"
 set :use_sudo, false
-set :checkout, 'export'
-
-# We need to know how to use mongrel
-set :mongrel_rails, '/usr/local/bin/mongrel_rails'
-set :mongrel_cluster_config, "#{deploy_to}/#{current_dir}/config/mongrel_cluster_production.yml"
-}
-
-file 'config/environments/development.rb', 
-%q{# Settings specified here will take precedence over those in config/environment.rb
-
-# In the development environment your application's code is reloaded on
-# every request.  This slows down response time but is perfect for development
-# since you don't have to restart the webserver when you make code changes.
-config.cache_classes = false
-
-# Log error messages when you accidentally call methods on nil.
-config.whiny_nils = true
-
-# Show full error reports and disable caching
-config.action_controller.consider_all_requests_local = true
-config.action_controller.perform_caching             = false
-config.action_view.debug_rjs                         = true
-
-# Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
-
-HOST = 'localhost'
+ 
+# Optional tasks ##########################################################################################
+# for use with shared files (e.g. config files)
+# after "deploy:update_code" do
+#   run "ln -s #{shared_path}/uploads #{release_path}/public"
+# end
 }
 
 file 'config/environments/production.rb', 
@@ -467,6 +546,31 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors if you bad email addresses should just be ignored
 config.action_mailer.raise_delivery_errors = false
+
+Paperclip.options[:image_magick_path] = '/usr/bin'
+}
+
+file 'config/environments/development.rb', 
+%q{# Settings specified here will take precedence over those in config/environment.rb
+
+# In the development environment your application's code is reloaded on
+# every request.  This slows down response time but is perfect for development
+# since you don't have to restart the webserver when you make code changes.
+config.cache_classes = false
+
+# Log error messages when you accidentally call methods on nil.
+config.whiny_nils = true
+
+# Show full error reports and disable caching
+config.action_controller.consider_all_requests_local = true
+config.action_controller.perform_caching             = false
+config.action_view.debug_rjs                         = true
+
+# Don't care if the mailer can't send
+config.action_mailer.raise_delivery_errors = false
+
+HOST = 'localhost'
+Paperclip.options[:image_magick_path] = '/opt/local/bin'
 }
 
 file 'config/environments/test.rb', 
@@ -501,24 +605,78 @@ require 'mocha'
 begin require 'redgreen'; rescue LoadError; end
 }
 
-file 'config/mongrel_cluster_production.yml', 
-%q{--- 
-# cwd: /home/CHANGEME/apps/CHANGEME/current
-# port: "3030"
-environment: production
-address: 127.0.0.1
-pid_file: log/mongrel.pid
-servers: 3
-}
+file 'lib/smtp_tls.rb', 
+%q{require "openssl"
+require "net/smtp"
 
-file 'config/mongrel_cluster_staging.yml', 
-%q{--- 
-# cwd: /home/CHANGEME/apps/CHANGEME/current
-# port: "3030"
-environment: staging
-address: 127.0.0.1
-pid_file: log/mongrel.pid
-servers: 2
+Net::SMTP.class_eval do
+  private
+  def do_start(helodomain, user, secret, authtype)
+    raise IOError, 'SMTP session already started' if @started
+
+    # use the ruby 1.8.6 library in development
+    if ENV["RAILS_ENV"] == "development" || ENV["RAILS_ENV"] == "test"
+      check_auth_args user, secret, authtype if user or secret
+    else
+      check_auth_args user, secret
+    end
+
+    sock = timeout(@open_timeout) { TCPSocket.open(@address, @port) }
+    @socket = Net::InternetMessageIO.new(sock)
+    @socket.read_timeout = 60 #@read_timeout
+
+    check_response(critical { recv_response() })
+    do_helo(helodomain)
+
+    if starttls
+      raise 'openssl library not installed' unless defined?(OpenSSL)
+      ssl = OpenSSL::SSL::SSLSocket.new(sock)
+      ssl.sync_close = true
+      ssl.connect
+      @socket = Net::InternetMessageIO.new(ssl)
+      @socket.read_timeout = 60 #@read_timeout
+      do_helo(helodomain)
+    end
+
+    authenticate user, secret, authtype if user
+    @started = true
+  ensure
+    unless @started
+      # authentication failed, cancel connection.
+      @socket.close if not @started and @socket and not @socket.closed?
+      @socket = nil
+    end
+  end
+
+  def do_helo(helodomain)
+    begin
+      if @esmtp
+        ehlo helodomain
+      else
+        helo helodomain
+      end
+      rescue Net::ProtocolError
+      if @esmtp
+        @esmtp = false
+        @error_occured = false
+        retry
+      end
+      raise
+    end
+  end
+
+  def starttls
+    getok('STARTTLS') rescue return false
+    return true
+  end
+
+  def quit
+    begin
+      getok('QUIT')
+      rescue EOFError
+    end
+  end
+end
 }
 
 inside('db') do
@@ -643,7 +801,8 @@ end
 # FINALIZE
 # ====================
 run "rm public/index.html"
-run "touch public/stylesheets/screen.css"
+run "haml --rails ."
+run "touch public/stylesheets/sass/screen.sass"
 run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END
 .DS_Store
