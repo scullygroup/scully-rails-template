@@ -12,7 +12,8 @@
 
 plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git"
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
-plugin 'jrails', "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
+plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
+plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 
 #====================
 # GEMS
@@ -28,17 +29,14 @@ gem 'thoughtbot-paperclip'
 gem 'newrelic_rpm'
 gem 'haml'
 gem 'binarylogic-searchlogic'
+gem 'justinfrench-formtastic'
 
 # Image cropping?
-if yes?("Do you want to use image cropping?")
-  generate :jcrop #TODO write generator that sets up image cropping
-end
+# if yes?("Do you want to use image cropping?")
+#   generate :jcrop #TODO write generator that sets up image cropping
+# end
 
-if yes?("Do you want to use Model Versioning?")  
-  gem 'vestal_versions' #TODO vendor in env and setup model attributes, http://github.com/laserlemon/vestal_versions
-end
-
-freeze!
+#freeze!
 rake("gems:install", :sudo => true)
 rake("gems:unpack")
 
@@ -230,8 +228,11 @@ Rails::Initializer.run do |config|
   config.gem 'haml',
              :version => '2.0.9'
   config.gem 'thoughtbot-paperclip', 
-            :lib => 'paperclip', 
-            :source => 'http://gems.github.com'                        
+             :lib => 'paperclip', 
+             :source => 'http://gems.github.com'
+  config.gem "justinfrench-formtastic", 
+             :lib     => 'formtastic', 
+             :source  => 'http://gems.github.com'                 
   
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
@@ -679,6 +680,14 @@ Net::SMTP.class_eval do
 end
 }
 
+file 'lib/tasks/metric_fu.rake', 
+%q{
+begin  
+    require 'metric_fu'  
+  rescue LoadError  
+end
+}
+
 inside('db') do
   run "mkdir bootstrap"
 end
@@ -800,8 +809,10 @@ end
 # ====================
 # FINALIZE
 # ====================
+run "cp /Users/bcalloway/RUBY/scully-rails-template/templates/reset.css public/stylesheets/"
 run "rm public/index.html"
 run "haml --rails ."
+run "mkdir public/stylesheets/sass"
 run "touch public/stylesheets/sass/screen.sass"
 run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END

@@ -11,19 +11,35 @@ plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.gi
 
 gem 'rubyist-aasm'
 gem 'binarylogic-authlogic'
-generate :auth #TODO write generator that sets up all user auth in controllers, etc
+#generate :auth #TODO write generator that sets up all user auth in controllers, etc
 
 #TODO user auth methods, sessions, filter_parameter_logging if User Auth is going here
 #file 'app/controllers/application_controller.rb'
 
 # Appending to environment.rb
-# env = IO.read ‘config/environment.rb’
-# 
+# env = IO.read "config/environment.rb"
+#  
 # ins = <<-ENDOFTEXT
-# # blah, blah, blah
+#   config.gem  'rubyist-aasm', 
+#               :lib => 'aasm',
+#               :source => 'http://gems.github.com'
+#   config.gem  'binarylogic-authlogic',
+#               :lib => 'authlogic',
+#               :source => 'http://gems.github.com'
 # ENDOFTEXT
-# 
+#  
 # env.gsub!(/^end$/, "#{ins}end") unless env.include?(ins)
 # File.open(‘config/environment.rb’, ‘w’) do |env_out|
-#   env_out.write(env)
+#  env_out.write(env)
 # end
+
+puts "
+********* Be sure to add this to config/environment.rb **************
+  config.gem  'rubyist-aasm', 
+              :lib => 'aasm',
+              :source => 'http://gems.github.com'
+  config.gem  'binarylogic-authlogic',
+              :lib => 'authlogic',
+              :source => 'http://gems.github.com'
+*********************************************************************
+"
