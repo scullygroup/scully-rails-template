@@ -14,6 +14,7 @@ plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
+plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.git"
 
 #====================
 # GEMS
@@ -30,6 +31,15 @@ gem 'newrelic_rpm'
 gem 'haml'
 gem 'binarylogic-searchlogic'
 gem 'justinfrench-formtastic'
+gem 'rubyist-aasm'
+gem 'binarylogic-authlogic'
+
+#TODO write generator that sets up all user auth in controllers, etc
+
+#TODO user auth methods, sessions, filter_parameter_logging if User Auth is going here
+#TODO setup file 'app/controllers/application_controller.rb'
+
+#TODO setup mailers and observers
 
 # Image cropping?
 # if yes?("Do you want to use image cropping?")
@@ -65,28 +75,83 @@ end
 }
 
 file 'app/views/layouts/_flashes.html.erb', 
-%q{<div id="flash">
-  <% flash.each do |key, value| -%>
-    <div id="flash_<%= key %>"><%=h value %></div>
-  <% end -%>
-</div>
+%q{#flash
+  - flash.each do |key, value|
+    %div{ :id => "flash_#{key}" }
+      %span
+        = h value
 }
 
-file 'app/views/layouts/application.html.erb', 
-%q{<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title><%= PROJECT_NAME.humanize %></title>
-    <%= stylesheet_link_tag 'screen', :media => 'all', :cache => true %>
-    <%= javascript_include_tag :defaults, :cache => true %>
-  </head>
-  <body class="<%= body_class %>">
-    <%= render :partial => 'layouts/flashes' -%>
-    <%= yield %>
-  </body>
-</html>
+file 'app/views/layouts/application.html.haml', 
+%q{!!!
+%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-type" }
+    %title
+      Scully On Rails
+      
+    = stylesheet_link_tag 'reset', 'screen', :media => 'all', :cache => true
+    = javascript_include_tag :defaults, :cache => true
+  
+  %body{ :class => body_class }
+    #wrapper
+      #header
+      
+      #main-nav
+      
+      #content
+        = render :partial => '/layouts/flashes'
+        = yield
+      
+      #footer
+}
+
+file 'app/views/layouts/admin.html.haml',
+%q{!!!
+%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-type" }
+    %title
+      Scully On Rails | Administration
+      
+    = stylesheet_link_tag 'reset', 'admin', 'theme', :media => 'all', :cache => 'admin/all'
+    = javascript_include_tag :defaults, :cache => true
+  
+  %body{ :class => body_class }
+    #wrapper
+      #page-container
+        #header
+          #view
+            = link_to 'View Site', '/', :target => '_blank'
+          %h1 Administration
+          .clear
+          = render :partial => '/layouts/user_bar'
+          = render :partial => '/layouts/admin_nav'
+          
+        #main
+          #content
+            = render :partial => '/layouts/flashes'
+          
+            = yield
+  
+}
+
+file 'app/views/layouts/_user_bar.html.haml',
+%q{#user-navigation      
+  - if current_user
+    = link_to "Edit profile", edit_user_path(:current)
+    |
+    = link_to "Logout", logout_path
+}
+
+file 'app/views/layouts/_admin_nav.html.haml',
+%q{#main-navigation
+  %ul
+    %li
+      = link_to "Admin Users", '/users'
+    %li
+      = link_to "Pages", '/pages'     
+  .clear
 }
 
 #====================
@@ -230,10 +295,16 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-paperclip', 
              :lib => 'paperclip', 
              :source => 'http://gems.github.com'
-  config.gem "justinfrench-formtastic", 
+  config.gem 'justinfrench-formtastic',
              :lib     => 'formtastic', 
              :source  => 'http://gems.github.com'                 
-  
+  config.gem 'rubyist-aasm', 
+             :lib => 'aasm',
+             :source => 'http://gems.github.com'
+  config.gem 'binarylogic-authlogic',
+             :lib => 'authlogic',
+             :source => 'http://gems.github.com'
+             
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -809,7 +880,7 @@ end
 # ====================
 # FINALIZE
 # ====================
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/reset.css -o public/stylesheets/"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/reset.css -O public/stylesheets/reset.css"
 run "rm public/index.html"
 run "haml --rails ."
 run "mkdir public/stylesheets/sass"
@@ -825,6 +896,7 @@ tmp/**/*
 doc/api
 doc/app
 END
+
 git :init
 git :add => "."
 git :commit => "-a -m 'Initial project commit'"

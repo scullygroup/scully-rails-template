@@ -1,0 +1,55 @@
+# This is an example of how to setup AASM for a model called Story
+
+require 'aasm'
+class Story < ActiveRecord::Base
+  
+  include AASM
+  
+  aasm_column :state
+  
+  aasm_initial_state :pending
+  
+  aasm_state :pending
+  aasm_state :approved
+  aasm_state :denied
+
+  aasm_event :approve do
+    transitions :to => :approved, :from => [:pending, :denied]
+  end
+
+  aasm_event :deny do
+    transitions :to => :denied, :from => [:pending, :approved]
+  end
+  
+  def approved
+    @approved = true
+  end
+  
+  def recently_approved?
+    @approved
+  end
+  
+end
+
+# In the Stories controller.....
+
+class StoriesController < ApplicationController
+  
+  # Normal RESTful methods go here (e.g. index, show, edit, etc.)
+  
+  def approve
+    @story = Story.find(params[:id])
+    @story.approved #reference method in model to set recently_approved?
+    @story.approve!
+    flash[:notice] = "Story has been approved!"
+    redirect_to('/stories')
+  end
+
+  def deny
+    @story = Story.find(params[:id])
+    @story.deny!
+    flash[:error] = "Story has been denied!"
+    redirect_to('/stories')
+  end
+  
+end
