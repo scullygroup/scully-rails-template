@@ -809,7 +809,7 @@ end
 # ====================
 # FINALIZE
 # ====================
-run "cp /Users/bcalloway/RUBY/scully-rails-template/templates/reset.css public/stylesheets/"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/reset.css -o public/stylesheets/"
 run "rm public/index.html"
 run "haml --rails ."
 run "mkdir public/stylesheets/sass"
