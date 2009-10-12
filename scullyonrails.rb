@@ -51,8 +51,7 @@ rake("gems:build")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:model, "user name:string")
-# generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
 generate(:controller, "users")
 
 generate :formtastic
