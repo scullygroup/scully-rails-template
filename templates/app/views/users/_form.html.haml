@@ -1,23 +1,4 @@
-- form_for @user do |f|
-  %p
-    = f.label :login
-    %br
-    = f.text_field :login
-    
-  %p
-    = f.label :email
-    %br
-    = f.text_field :email
-    
-  %p
-    = f.label :password
-    %br
-    = f.password_field :password
+- semantic_form_for(@user, :html => {:class => 'validate'}) do |f|
   
-  %p
-    = f.label :password_confirmation
-    %br
-    = f.password_field :password_confirmation
-  
-  %p
-    = f.submit button
+  = f.inputs :login, :email, :password, :password_confirmation
+  = f.buttons :commit

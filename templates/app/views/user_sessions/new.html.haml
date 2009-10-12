@@ -1,6 +1,6 @@
 %h1
   Login
-- form_for @user_session do |f|
+- semantic_form_for(@user_session, :html => {:class => 'validate'}) do |f|
   
   = f.error_messages
   %p

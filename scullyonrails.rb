@@ -22,17 +22,17 @@ plugin 'validation_reflection', :git => "git://github.com/redinger/validation_re
 #====================
 
 gem 'RedCloth', :lib => 'redcloth'
-gem 'mislav-will_paginate', :lib => 'will_paginate',  :source => 'http://gems.github.com'
+gem 'will_paginate', :lib => 'will_paginate', :source => 'http://gemcutter.org'
 gem 'mocha'
-gem 'thoughtbot-factory_girl',:lib => 'factory_girl', :source => 'http://gems.github.com'
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :source => 'http://gems.github.com'
-gem 'thoughtbot-paperclip', :lib => 'paperclip', :source => 'http://gems.github.com'
-gem 'newrelic_rpm', :source => 'http://gems.github.com'
-gem 'haml'
+gem 'factory_girl',:lib => 'factory_girl', :source => 'http://gemcutter.org'
+gem 'shoulda', :lib => 'shoulda', :source => 'http://gemcutter.org'
+gem 'paperclip', :lib => 'paperclip', :source => 'http://gemcutter.org'
+gem 'newrelic_rpm', :source => 'http://gemcutter.org'
+gem 'haml', :source => 'http://gemcutter.org'
 gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
 gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
-gem 'binarylogic-authlogic', :lib => 'authlogic', :source => 'http://gems.github.com'
-gem 'binarylogic-searchlogic', :lib => 'searchlogic', :source => 'http://gems.github.com'
+gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
+gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 gem 'validatious-on-rails', :source => 'http://gemcutter.org'
 
 #TODO formtastic setup
@@ -129,6 +129,57 @@ end
 #====================
 # INITIALIZERS
 #====================
+
+# Because the formtastic generator is not working for some reason
+initializer 'formtastic.rb',
+%q{# Set the default text field size when input is a string. Default is 50.
+# Formtastic::SemanticFormBuilder.default_text_field_size = 50
+
+# Should all fields be considered "required" by default?
+# Defaults to true, see ValidationReflection notes below.
+# Formtastic::SemanticFormBuilder.all_fields_required_by_default = true
+
+# Should select fields have a blank option/prompt by default?
+# Defaults to true.
+# Formtastic::SemanticFormBuilder.include_blank_for_select_by_default = true
+
+# Set the string that will be appended to the labels/fieldsets which are required
+# It accepts string or procs and the default is a localized version of
+# '<abbr title="required">*</abbr>'. In other words, if you configure formtastic.required
+# in your locale, it will replace the abbr title properly. But if you don't want to use
+# abbr tag, you can simply give a string as below
+# Formtastic::SemanticFormBuilder.required_string = "(required)"
+
+# Set the string that will be appended to the labels/fieldsets which are optional
+# Defaults to an empty string ("") and also accepts procs (see required_string above)
+# Formtastic::SemanticFormBuilder.optional_string = "(optional)"
+
+# Set the way inline errors will be displayed.
+# Defaults to :sentence, valid options are :sentence, :list and :none
+Formtastic::SemanticFormBuilder.inline_errors = :list
+
+# Set the method to call on label text to transform or format it for human-friendly
+# reading when formtastic is user without object. Defaults to :humanize.
+# Formtastic::SemanticFormBuilder.label_str_method = :humanize
+
+# Set the array of methods to try calling on parent objects in :select and :radio inputs
+# for the text inside each @<option>@ tag or alongside each radio @<input>@. The first method
+# that is found on the object will be used.
+# Defaults to ["to_label", "display_name", "full_name", "name", "title", "username", "login", "value", "to_s"]
+# Formtastic::SemanticFormBuilder.collection_label_methods = [
+#   "to_label", "display_name", "full_name", "name", "title", "username", "login", "value", "to_s"]
+
+# Formtastic by default renders inside li tags the input, hints and then
+# errors messages. Sometimes you want the hints to be rendered first than
+# the input, in the following order: hints, input and errors. You can
+# customize it doing just as below:
+Formtastic::SemanticFormBuilder.inline_order = [:input, :hints, :errors]
+
+# Specifies if labels/hints for input fields automatically be looked up using I18n.
+# Default value: false. Overridden for specific fields by setting value to true,
+# i.e. :label => true, or :hint => true (or opposite depending on initialized value)
+# Formtastic::SemanticFormBuilder.i18n_lookups_by_default = false
+}
 
 initializer 'action_mailer_configs.rb', 
 %q{require 'smtp_tls'
@@ -246,22 +297,23 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on.
   config.gem 'RedCloth',
              :lib => 'redcloth' 
-  config.gem 'mislav-will_paginate', 
+  config.gem 'will_paginate', 
              :lib => 'will_paginate', 
-             :source => 'http://gems.github.com'
+             :source => 'http://gemcutter.org'
   config.gem 'mocha'
-  config.gem 'thoughtbot-factory_girl', 
+  config.gem factory_girl', 
              :lib => 'factory_girl', 
-             :source => 'http://gems.github.com' 
-  config.gem 'thoughtbot-shoulda', 
+             :source => 'http://gemcutter.org'
+  config.gem 'shoulda', 
              :lib => 'shoulda', 
-             :source => 'http://gems.github.com'
+             :source => 'http://gemcutter.org'
   config.gem 'newrelic_rpm',
-             :source => 'http://gems.github.com'
-  config.gem 'haml'
-  config.gem 'thoughtbot-paperclip', 
+             :source => 'http://gemcutter.org'
+  config.gem 'haml',
+              :source => 'http://gemcutter.org'
+  config.gem 'paperclip', 
              :lib => 'paperclip', 
-             :source => 'http://gems.github.com'
+             :source => 'http://gemcutter.org'
   config.gem 'justinfrench-formtastic',
              :lib => 'formtastic', 
              :source => 'http://gems.github.com'   
@@ -270,12 +322,12 @@ Rails::Initializer.run do |config|
   config.gem 'rubyist-aasm', 
              :lib => 'aasm',
              :source => 'http://gems.github.com'
-  config.gem 'binarylogic-authlogic',
+  config.gem 'authlogic',
              :lib => 'authlogic',
-             :source => 'http://gems.github.com'
-  config.gem 'binarylogic-searchlogic',
+             :source => 'http://gemcutter.org'
+  config.gem 'searchlogic',
              :lib => 'searchlogic',
-             :source => 'http://gems.github.com'
+             :source => 'http://gemcutter.org'
              
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
@@ -917,6 +969,8 @@ run "rm -rf vendor/plugins/comatose_engine/.git"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/admin.sass -O public/stylesheets/admin.sass"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/theme.sass -O public/stylesheets/theme.sass"
 
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
