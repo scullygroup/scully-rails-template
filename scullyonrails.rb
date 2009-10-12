@@ -56,8 +56,8 @@ rake("gems:unpack")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:scaffold, "User", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
-
+generate(:model, "User", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:controller, "Users")
 #====================
 # APP
 #====================
@@ -872,7 +872,7 @@ run "rm -f app/views/user_sessions/*"
 run "rm -f app/views/users/*"
 
 # Copy over file templates
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/public/stylesheets/reset.css -O public/stylesheets/reset.css"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_controller.rb -O app/controllers/user_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
