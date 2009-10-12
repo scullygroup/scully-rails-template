@@ -33,6 +33,7 @@ gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 
+#TODO create email validation and password recovery
 #TODO setup mailers and observers for user auth
 #TODO setup Roles and integrate with comatose_engine
 
