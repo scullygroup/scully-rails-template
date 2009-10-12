@@ -2,6 +2,14 @@ h1.  ScullyTown Rails Template
 
 A workhorse Rails 2.3 template we use for the majority of our projects, based on the original "Thoughtbot Suspenders template":http://github.com/thoughtbot/suspenders.
 
+h3.  How to use
+
+To use this template, run the following command:
+
+<pre><code>
+  rails -d mysql -m http://github.com/scullygroup/scully-rails-template/raw/master/scullyonrails.rb /path/to/app/appname
+</code></pre>
+
 h3.  What's installed
 
 *Plugins*
@@ -77,12 +85,4 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | |____reset.css
 </code></pre>
 
-For a little extra helps with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides and example of how to use AASM in the model.
-
-h3.  How to use
-
-To use this template, run the following command:
-
-<pre><code>
-  rails -d mysql -m http://github.com/scullygroup/scully-rails-template/raw/master/scullyonrails.rb /path/to/app/appname
-</code></pre>
+For a little extra help with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides an example of how to use AASM in the model.
