@@ -35,7 +35,6 @@ gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 gem 'validatious-on-rails', :source => 'http://gemcutter.org'
 
-#TODO formtastic setup
 #TODO setup mailers and observers for user auth
 #TODO setup Roles and integrate with comatose_engine
 
@@ -301,7 +300,7 @@ Rails::Initializer.run do |config|
              :lib => 'will_paginate', 
              :source => 'http://gemcutter.org'
   config.gem 'mocha'
-  config.gem factory_girl', 
+  config.gem 'factory_girl', 
              :lib => 'factory_girl', 
              :source => 'http://gemcutter.org'
   config.gem 'shoulda', 
@@ -310,7 +309,7 @@ Rails::Initializer.run do |config|
   config.gem 'newrelic_rpm',
              :source => 'http://gemcutter.org'
   config.gem 'haml',
-              :source => 'http://gemcutter.org'
+             :source => 'http://gemcutter.org'
   config.gem 'paperclip', 
              :lib => 'paperclip', 
              :source => 'http://gemcutter.org'
