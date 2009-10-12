@@ -71,6 +71,8 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____new.html.haml
   | | | |____show.html.haml
   |____public
+  | |____javascripts
+  | | |____validatious.min.js
   | |____stylesheets
   | | |____reset.css
 </code></pre>
