@@ -1,0 +1,29 @@
+%h1
+  Administrative Users
+  
+= render :partial => '/users/secondary_nav'
+
+%table.table
+  %tr
+    %th
+      Login
+    %th
+      Email
+    %th
+      Last Login
+    %th
+      Last Login IP
+  - @users.each do |user|
+    %tr
+      %td
+        = h user.login
+      %td
+        = h user.email
+      %td
+        = h user.last_login_at
+      %td
+        = h user.last_login_ip
+      %td
+        = link_to 'Edit', edit_user_path(user)
+        |
+        = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete

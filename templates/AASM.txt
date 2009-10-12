@@ -53,3 +53,8 @@ class StoriesController < ApplicationController
   end
   
 end
+
+# In routes.rb........
+
+map.approve "/stories/approve/:id", :controller => 'stories', :action => "approve"
+map.deny "/stories/deny/:id", :controller => 'stories', :action => "deny"

@@ -51,6 +51,14 @@ rake("gems:install", :sudo => true)
 rake("gems:unpack")
 
 #====================
+# Models and Controllers
+#====================
+generate(:session, "user_session")
+generate(:controller, "user_sessions")
+
+generate(:scaffold, "User", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+
+#====================
 # APP
 #====================
 
@@ -72,86 +80,6 @@ file 'app/helpers/application_helper.rb',
     "#{controller.controller_name} #{controller.controller_name}-#{controller.action_name}"
   end
 end
-}
-
-file 'app/views/layouts/_flashes.html.erb', 
-%q{#flash
-  - flash.each do |key, value|
-    %div{ :id => "flash_#{key}" }
-      %span
-        = h value
-}
-
-file 'app/views/layouts/application.html.haml', 
-%q{!!!
-%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
-  %head
-    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-type" }
-    %title
-      Scully On Rails
-      
-    = stylesheet_link_tag 'reset', 'screen', :media => 'all', :cache => true
-    = javascript_include_tag :defaults, :cache => true
-  
-  %body{ :class => body_class }
-    #wrapper
-      #header
-      
-      #main-nav
-      
-      #content
-        = render :partial => '/layouts/flashes'
-        = yield
-      
-      #footer
-}
-
-file 'app/views/layouts/admin.html.haml',
-%q{!!!
-%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
-  %head
-    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-type" }
-    %title
-      Scully On Rails | Administration
-      
-    = stylesheet_link_tag 'reset', 'admin', 'theme', :media => 'all', :cache => 'admin/all'
-    = javascript_include_tag :defaults, :cache => true
-  
-  %body{ :class => body_class }
-    #wrapper
-      #page-container
-        #header
-          #view
-            = link_to 'View Site', '/', :target => '_blank'
-          %h1 Administration
-          .clear
-          = render :partial => '/layouts/user_bar'
-          = render :partial => '/layouts/admin_nav'
-          
-        #main
-          #content
-            = render :partial => '/layouts/flashes'
-          
-            = yield
-  
-}
-
-file 'app/views/layouts/_user_bar.html.haml',
-%q{#user-navigation      
-  - if current_user
-    = link_to "Edit profile", edit_user_path(:current)
-    |
-    = link_to "Logout", logout_path
-}
-
-file 'app/views/layouts/_admin_nav.html.haml',
-%q{#main-navigation
-  %ul
-    %li
-      = link_to "Admin Users", '/users'
-    %li
-      = link_to "Pages", '/pages'     
-  .clear
 }
 
 #====================
@@ -344,6 +272,51 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
+end
+
+Comatose.configure do |config|
+
+  config.admin_title          = 'Administration'
+  config.admin_helpers        = []
+  config.admin_sub_title      = 'Administration Pages'
+  config.content_type         = 'utf-8'
+  config.default_filter       = ''
+  config.default_processor    = :erb
+  config.default_tree_level   = 3
+  config.disable_caching      = true
+  config.hidden_meta_fields   = 'filter'
+  
+  # might want to set these to false at go-live
+  #config.allow_import_export  = true
+  #config.allow_clear_cache    = true
+  #config.allow_add_child      = true
+  #config.allow_reordering     = true
+  
+  #config.helpers << ApplicationHelper
+
+  # Includes AuthenticationSystem in the ComatoseController
+  #config.includes << :acts_as_authentic
+
+  # Calls :login_required as a before_filter
+  #config.authorization = :login_required
+     
+  # Includes AuthenticationSystem in the ComatoseAdminController
+  config.admin_includes << Authlogic::ActsAsAuthentic
+
+  # Returns the author name (login, in this case) for the current user
+  config.admin_get_author do
+    current_user.login
+  end
+
+  # Calls :login_required as a before_filterc
+  #config.admin_authorization = :login_required
+  config.admin_authorization = :require_user
+    
+  #Returns different admin 'root paths'
+  # config.admin_get_root_page do
+  #   ComatosePage.find_by_path( '' )
+  # end
+
 end
 }
 
@@ -764,6 +737,18 @@ inside('db') do
 end
 
 # ====================
+# ROUTES
+# ====================
+route 'map.login "/login", :controller => :user_sessions, :action => :new'
+route 'map.logout "/logout", :controller => :user_sessions, :action => :destroy'
+route 'map.register "/register", :controller => :users, :action => :new'
+route 'map.resources :user_sessions'
+route 'map.resources :account, :controller => :user'
+route 'map.resources :users'
+route 'map.comatose_admin "admin"'
+route 'map.comatose_root "", :layout => "application"'
+
+# ====================
 # TEST
 # ====================
 
@@ -880,7 +865,31 @@ end
 # ====================
 # FINALIZE
 # ====================
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/reset.css -O public/stylesheets/reset.css"
+
+# Cleanup junk
+run "rm -f app/views/layouts/*"
+run "rm -f app/views/user_sessions/*"
+run "rm -f app/views/users/*"
+
+# Copy over file templates
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/public/stylesheets/reset.css -O public/stylesheets/reset.css"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_controller.rb -O app/controllers/user_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layout/application.html.haml -O app/views/layout/application.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layout/admin.html.haml -O app/views/layout/admin.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layout/_user_bar.html.haml -O app/views/layout/_user_bar.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layout/_admin_nav.html.haml -O app/views/layout/_admin_nav.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layout/_flashes.html.haml -O app/views/layout/_flashes.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/user_sessions/new.html.haml -O app/views/user_sessions/new.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_form.html.haml -O app/views/users/_form.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_secondary_nav.html.haml -O app/views/users/_secondary_nav.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/edit.html.haml -O app/views/users/edit.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/index.html.haml -O app/views/users/index.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
+
+# Misc tasks
 run "rm public/index.html"
 run "haml --rails ."
 run "mkdir public/stylesheets/sass"
@@ -900,3 +909,14 @@ END
 git :init
 git :add => "."
 git :commit => "-a -m 'Initial project commit'"
+
+puts "
+**********************************************************************************************
+*
+*  All Done!!
+*    
+*  Be sure to configure database.yml file
+*  and then run rake db:migrate to run pending migrations
+*
+**********************************************************************************************
+"
