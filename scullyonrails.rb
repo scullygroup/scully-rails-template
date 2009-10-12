@@ -35,17 +35,8 @@ gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 gem 'binarylogic-authlogic', :lib => 'authlogic', :source => 'http://gems.github.com'
 gem 'binarylogic-searchlogic', :lib => 'searchlogic', :source => 'http://gems.github.com'
 
-#TODO write generator that sets up all user auth in controllers, etc
-
-#TODO user auth methods, sessions, filter_parameter_logging if User Auth is going here
-#TODO setup file 'app/controllers/application_controller.rb'
-
-#TODO setup mailers and observers
-
-# Image cropping?
-# if yes?("Do you want to use image cropping?")
-#   generate :jcrop #TODO write generator that sets up image cropping
-# end
+#TODO formtastic setup
+#TODO setup mailers and observers for user auth
 
 #freeze!
 rake("gems:install", :sudo => true)
@@ -259,7 +250,7 @@ Rails::Initializer.run do |config|
   config.gem 'mislav-will_paginate', 
              :lib => 'will_paginate', 
              :source => 'http://gems.github.com'
-  config.gem 'mocha',
+  config.gem 'mocha'
   config.gem 'thoughtbot-factory_girl', 
              :lib => 'factory_girl', 
              :source => 'http://gems.github.com' 
