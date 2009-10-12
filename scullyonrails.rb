@@ -49,7 +49,7 @@ gem 'binarylogic-authlogic'
 #freeze!
 rake("gems:install", :sudo => true)
 rake("gems:unpack")
-
+rake("gems:build")
 #====================
 # Models and Controllers
 #====================
@@ -872,22 +872,22 @@ run "rm -f app/views/user_sessions/*"
 run "rm -f app/views/users/*"
 
 # Copy over file templates
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_controller.rb -O app/controllers/user_controller.rb"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/admin.html.haml -O app/views/layouts/admin.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_user_bar.html.haml -O app/views/layouts/_user_bar.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_admin_nav.html.haml -O app/views/layouts/_admin_nav.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_flashes.html.haml -O app/views/layouts/_flashes.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/user_sessions/new.html.haml -O app/views/user_sessions/new.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_form.html.haml -O app/views/users/_form.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_secondary_nav.html.haml -O app/views/users/_secondary_nav.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/edit.html.haml -O app/views/users/edit.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/index.html.haml -O app/views/users/index.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_controller.rb -O app/controllers/user_controller.rb"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/admin.html.haml -O app/views/layouts/admin.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_user_bar.html.haml -O app/views/layouts/_user_bar.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_admin_nav.html.haml -O app/views/layouts/_admin_nav.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_flashes.html.haml -O app/views/layouts/_flashes.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/user_sessions/new.html.haml -O app/views/user_sessions/new.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_form.html.haml -O app/views/users/_form.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_secondary_nav.html.haml -O app/views/users/_secondary_nav.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/edit.html.haml -O app/views/users/edit.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/index.html.haml -O app/views/users/index.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
+# run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
 
 # Misc tasks
 run "rm public/index.html"
