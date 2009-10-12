@@ -1,0 +1,86 @@
+h1.  ScullyTown Rails Template
+
+A workhorse Rails 2.3 template we use for the majority of our projects, based on the original "Thoughtbot Suspenders template":http://github.com/thoughtbot/suspenders.
+
+h3.  What's installed
+
+*Plugins*
+* hoptoad_notifier, "http://github.com/thoughtbot/hoptoad_notifier.git":http://github.com/thoughtbot/hoptoad_notifier.git
+* limerick_rake, "http://github.com/thoughtbot/limerick_rake":http://github.com/thoughtbot/hoptoad_notifier.git
+* jrails, "http://code.google.com/p/ennerchi":http://code.google.com/p/ennerchi
+* admin_data', "http://github.com/neerajdotname/admin_data":http://github.com/neerajdotname/admin_data
+* engines', "http://github.com/lazyatom/engines":http://github.com/lazyatom/engines
+* comatose_engine', "http://github.com/bcalloway/comatose-engine":http://github.com/bcalloway/comatose-engine
+
+*Gems*
+RedCloth, "http://redcloth.org":http://redcloth.org
+mislav-will_paginate, "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
+mocha, "http://github.com/floehopper/mocha":http://github.com/floehopper/mocha
+thoughtbot-factory_girl, "http://github.com/thoughtbot/factory_girl":http://github.com/thoughtbot/factory_girl
+thoughtbot-shoulda, "http://github.com/thoughtbot/shoulda":http://github.com/thoughtbot/shoulda
+thoughtbot-paperclip, "http://github.com/thoughtbot/paperclip":http://github.com/thoughtbot/paperclip
+newrelic_rpm, "http://github.com/smtlaissezfaire/newrelic_rpm":http://github.com/smtlaissezfaire/newrelic_rpm
+haml, "http://github.com/nex3/haml":http://github.com/nex3/haml
+binarylogic-authlogic, "http://github.com/binarylogic/authlogic":http://github.com/binarylogic/authlogic
+binarylogic-searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
+justinfrench-formtastic, "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
+rubyist-aasm, "http://github.com/rubyist/aasm":http://github.com/rubyist/aasm
+validatious-on-rails, "http://github.com/grimen/validatious-on-rails":http://github.com/grimen/validatious-on-rails
+
+h3.  What's setup
+
+When the template is generated, the following occurs:
+* All the above plugins and gems are installed and vendored.
+* User Session is generated
+* User Sessions Controller is generated
+* User model and database migration is generated
+* Users controller is generated
+* Formtastic generator is run
+* Baseline app structure is generated
+** application_controller.rb specifics
+** environment.rb configuration
+** Capistrano envrionment-specific recipes are installed
+** Actionmailer initializer created as action_mailer_configs.rb with Gmail settings
+** smtp_tls.rb created for use with Gmail and ActionMailer
+** Misc initializers are created
+** Basic routes are installed in routes.rb
+
+At the end of the generation, the base views, models, and controllers for AuthLogic as well as admin and application layouts are installed as follows:
+
+<pre><code>
+  |____app
+  | |____controllers
+  | | |____user_sessions_controller.rb
+  | | |____users_controller.rb
+  | |____models
+  | | |____user.rb
+  | |____views
+  | | |____layouts
+  | | | |_____admin_nav.html.haml
+  | | | |_____flashes.html.haml
+  | | | |_____user_bar.html.haml
+  | | | |____admin.html.haml
+  | | | |____application.html.haml
+  | | |____user_sessions
+  | | | |____new.html.haml
+  | | |____users
+  | | | |_____form.html.haml
+  | | | |_____secondary_nav.html.haml
+  | | | |____edit.html.haml
+  | | | |____index.html.haml
+  | | | |____new.html.haml
+  | | | |____show.html.haml
+  |____public
+  | |____stylesheets
+  | | |____reset.css
+</code></pre>
+
+For a little extra helps with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides and example of how to use AASM in the model.
+
+h3.  How to use
+
+To use this template, run the following command:
+
+<pre><code>
+  rails -d mysql -m http://github.com/scullygroup/scully-rails-template/raw/master/scullyonrails.rb /path/to/app/appname
+</code></pre>

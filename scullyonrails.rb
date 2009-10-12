@@ -976,7 +976,7 @@ puts "
 *
 *  All Done!!
 *    
-*  Be sure to configure database.yml file
+*  Be sure to configure database.yml
 *  and then run rake db:migrate to run pending migrations
 *
 **********************************************************************************************
