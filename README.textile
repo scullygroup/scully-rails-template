@@ -5,12 +5,12 @@ A workhorse Rails 2.3 template we use for the majority of our projects, based on
 h3.  What's installed
 
 *Plugins*
-* hoptoad_notifier, "http://github.com/thoughtbot/hoptoad_notifier.git":http://github.com/thoughtbot/hoptoad_notifier.git
-* limerick_rake, "http://github.com/thoughtbot/limerick_rake":http://github.com/thoughtbot/hoptoad_notifier.git
-* jrails, "http://code.google.com/p/ennerchi":http://code.google.com/p/ennerchi
-* admin_data', "http://github.com/neerajdotname/admin_data":http://github.com/neerajdotname/admin_data
-* engines', "http://github.com/lazyatom/engines":http://github.com/lazyatom/engines
-* comatose_engine', "http://github.com/bcalloway/comatose-engine":http://github.com/bcalloway/comatose-engine
+hoptoad_notifier, "http://github.com/thoughtbot/hoptoad_notifier.git":http://github.com/thoughtbot/hoptoad_notifier.git
+limerick_rake, "http://github.com/thoughtbot/limerick_rake":http://github.com/thoughtbot/hoptoad_notifier.git
+jrails, "http://code.google.com/p/ennerchi":http://code.google.com/p/ennerchi
+admin_data', "http://github.com/neerajdotname/admin_data":http://github.com/neerajdotname/admin_data
+engines', "http://github.com/lazyatom/engines":http://github.com/lazyatom/engines
+comatose_engine', "http://github.com/bcalloway/comatose-engine":http://github.com/bcalloway/comatose-engine
 
 *Gems*
 RedCloth, "http://redcloth.org":http://redcloth.org
