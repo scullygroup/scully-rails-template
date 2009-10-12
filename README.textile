@@ -44,6 +44,7 @@ When the template is generated, the following occurs:
 * User model and database migration is generated
 * Users controller is generated
 * Formtastic generator is run
+* Validatious generator is run
 * Comatose Engine migrations are run
 * Baseline app structure is generated
 ** application_controller.rb specifics
@@ -53,6 +54,7 @@ When the template is generated, the following occurs:
 ** smtp_tls.rb created for use with Gmail and ActionMailer
 ** Misc initializers are created
 ** Basic routes are installed in routes.rb
+* Project is initalized as a git repo, all files added, and initial commit message made
 
 At the end of the generation, the base views, models, and controllers for AuthLogic as well as admin and application layouts are installed as follows:
 

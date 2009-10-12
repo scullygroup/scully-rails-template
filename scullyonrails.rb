@@ -53,8 +53,6 @@ generate(:controller, "user_sessions")
 generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
 generate(:controller, "users")
 
-generate :formtastic
-
 #====================
 # APP
 #====================
@@ -782,14 +780,14 @@ end
 # ====================
 # ROUTES
 # ====================
+route 'map.comatose_admin "admin"'
+route 'map.comatose_root "", :layout => "application"'
 route 'map.login "/login", :controller => :user_sessions, :action => :new'
 route 'map.logout "/logout", :controller => :user_sessions, :action => :destroy'
 route 'map.register "/register", :controller => :users, :action => :new'
 route 'map.resources :user_sessions'
 route 'map.resources :account, :controller => :user'
 route 'map.resources :users'
-route 'map.comatose_admin "admin"'
-route 'map.comatose_root "", :layout => "application"'
 
 # ====================
 # TEST
@@ -920,9 +918,6 @@ run "rm -rf vendor/plugins/comatose_engine/.git"
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
 
-# javascripts
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/javascripts/validatious.min.js -O public/javascripts/validatious.min.js"
-
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
@@ -949,7 +944,8 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # ====================
 # FINALIZE
 # ====================
-
+generate :formtastic
+generate :validatious
 generate :plugin_migration
 
 # Misc tasks

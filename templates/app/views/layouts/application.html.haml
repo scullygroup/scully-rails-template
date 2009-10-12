@@ -6,7 +6,8 @@
       Scully On Rails
       
     = stylesheet_link_tag 'reset', 'screen', :media => 'all', :cache => true
-    = javascript_include_tag :defaults, 'validatious.min', :cache => true
+    = javascript_include_tag :defaults, 'v2.standalone.full.min.js', 'validatious.config.js', :cache => true
+    = javascript_for_validatious
   
   %body{ :class => body_class }
     #wrapper
