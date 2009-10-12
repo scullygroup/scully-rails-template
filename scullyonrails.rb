@@ -16,6 +16,7 @@ plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrail
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
 plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.git"
+plugin 'validation_reflection', :git => "git://github.com/redinger/validation_reflection.git"
 
 #====================
 # GEMS
@@ -29,14 +30,15 @@ gem 'thoughtbot-shoulda', :lib => 'shoulda', :source => 'http://gems.github.com'
 gem 'thoughtbot-paperclip', :lib => 'paperclip', :source => 'http://gems.github.com'
 gem 'newrelic_rpm', :source => 'http://gems.github.com'
 gem 'haml'
-gem 'binarylogic-searchlogic'
 gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
 gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 gem 'binarylogic-authlogic', :lib => 'authlogic', :source => 'http://gems.github.com'
 gem 'binarylogic-searchlogic', :lib => 'searchlogic', :source => 'http://gems.github.com'
+gem 'validatious-on-rails', :source => 'http://gemcutter.org'
 
 #TODO formtastic setup
 #TODO setup mailers and observers for user auth
+#TODO setup Roles and integrate with comatose_engine
 
 #freeze!
 rake("gems:install", :sudo => true)
@@ -44,13 +46,16 @@ rake("gems:unpack")
 rake("gems:build")
 
 #====================
-# Models and Controllers
+# Generators
 #====================
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:model, "user name:string")
+# generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
 generate(:controller, "users")
+
+generate :formtastic
 
 #====================
 # APP
@@ -264,8 +269,10 @@ Rails::Initializer.run do |config|
              :lib => 'paperclip', 
              :source => 'http://gems.github.com'
   config.gem 'justinfrench-formtastic',
-             :lib     => 'formtastic', 
-             :source  => 'http://gems.github.com'                 
+             :lib => 'formtastic', 
+             :source => 'http://gems.github.com'   
+  config.gem 'validatious-on-rails',
+             :source => 'http://gemcutter.org'              
   config.gem 'rubyist-aasm', 
              :lib => 'aasm',
              :source => 'http://gems.github.com'
@@ -913,6 +920,9 @@ run "rm -f app/views/users/*"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
+
+# javascripts
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/javascripts/validatious.min.js -O public/javascripts/validatious.min.js"
 
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
