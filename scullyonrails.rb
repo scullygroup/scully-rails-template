@@ -14,6 +14,7 @@ plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
+plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
 plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.git"
 
 #====================
@@ -21,18 +22,18 @@ plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.gi
 #====================
 
 gem 'RedCloth', :lib => 'redcloth'
-gem 'mislav-will_paginate'
+gem 'mislav-will_paginate', :lib => 'will_paginate',  :source => 'http://gems.github.com'
 gem 'mocha'
-gem 'thoughtbot-factory_girl'
-gem 'thoughtbot-shoulda'
-gem 'thoughtbot-quietbacktrace'
-gem 'thoughtbot-paperclip'
-gem 'newrelic_rpm'
+gem 'thoughtbot-factory_girl',:lib => 'factory_girl', :source => 'http://gems.github.com'
+gem 'thoughtbot-shoulda', :lib => 'shoulda', :source => 'http://gems.github.com'
+gem 'thoughtbot-paperclip', :lib => 'paperclip', :source => 'http://gems.github.com'
+gem 'newrelic_rpm', :source => 'http://gems.github.com'
 gem 'haml'
 gem 'binarylogic-searchlogic'
-gem 'justinfrench-formtastic'
-gem 'rubyist-aasm'
-gem 'binarylogic-authlogic'
+gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
+gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
+gem 'binarylogic-authlogic', :lib => 'authlogic', :source => 'http://gems.github.com'
+gem 'binarylogic-searchlogic', :lib => 'searchlogic', :source => 'http://gems.github.com'
 
 #TODO write generator that sets up all user auth in controllers, etc
 
@@ -57,7 +58,8 @@ rake("gems:build")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:scaffold, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:controller, "users")
 
 #====================
 # APP
@@ -72,6 +74,55 @@ file 'app/controllers/application_controller.rb',
 
   include HoptoadNotifier::Catcher
 
+  filter_parameter_logging :password, :password_confirmation
+  helper_method :current_user_session, :current_user
+  
+  before_filter :start_session
+  
+  def start_session
+    unless session[:user_random]
+  		session[:user_random] = rand(99999999)
+  	end
+  end
+  
+  private
+  def current_user_session
+    return @current_user_session if defined?(@current_user_session)
+    @current_user_session = UserSession.find
+  end
+
+  def current_user
+    return @current_user if defined?(@current_user)
+    @current_user = current_user_session && current_user_session.user
+  end
+
+  def require_user
+    unless current_user
+      store_location
+      flash[:error] = "You must be logged in to access this page"
+      redirect_to new_user_session_url
+      return false
+    end
+  end
+
+  # def require_no_user
+  #   if current_user
+  #     store_location
+  #     flash[:error] = "You must be logged out to access this page"
+  #     redirect_to account_url
+  #     return false
+  #   end
+  # end
+  
+  def store_location
+    session[:return_to] = request.request_uri
+  end
+  
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
+  end
+  
 end
 }
 
@@ -185,8 +236,13 @@ RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
 Rails::Initializer.run do |config|
+  
+  config.plugins = [:engines, :comatose_engine, :all]
+  config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/comatose_engine/engine_plugins"]
+  
   # Settings in config/environments/* take precedence over those specified here.
 
   # Application configuration should go into files in config/initializers
@@ -203,8 +259,7 @@ Rails::Initializer.run do |config|
   config.gem 'mislav-will_paginate', 
              :lib => 'will_paginate', 
              :source => 'http://gems.github.com'
-  config.gem 'mocha', 
-  config.gem 'quietbacktrace'
+  config.gem 'mocha',
   config.gem 'thoughtbot-factory_girl', 
              :lib => 'factory_girl', 
              :source => 'http://gems.github.com' 
@@ -225,6 +280,9 @@ Rails::Initializer.run do |config|
              :source => 'http://gems.github.com'
   config.gem 'binarylogic-authlogic',
              :lib => 'authlogic',
+             :source => 'http://gems.github.com'
+  config.gem 'binarylogic-searchlogic',
+             :lib => 'searchlogic',
              :source => 'http://gems.github.com'
              
   # Only load the plugins named here, in the order given. By default, all plugins 
@@ -312,6 +370,8 @@ Comatose.configure do |config|
   # end
 
 end
+
+require "#{RAILS_ROOT}/vendor/plugins/comatose_engine/engine_config/boot.rb"
 }
 
 file 'Capfile', 
@@ -638,7 +698,6 @@ config.action_mailer.delivery_method = :test
 
 HOST = 'localhost'
 
-require 'quietbacktrace'
 require 'factory_girl'
 require 'mocha'
 begin require 'redgreen'; rescue LoadError; end
@@ -857,9 +916,9 @@ end
 # ====================
 
 # Cleanup junk
-# run "rm -f app/views/layouts/*"
-# run "rm -f app/views/user_sessions/*"
-# run "rm -f app/views/users/*"
+run "rm -f app/views/layouts/*"
+run "rm -f app/views/user_sessions/*"
+run "rm -f app/views/users/*"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
@@ -896,7 +955,7 @@ run "rm public/index.html"
 run "haml --rails ."
 run "mkdir public/stylesheets/sass"
 run "touch public/stylesheets/sass/screen.sass"
-run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
+#run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END
 .DS_Store
 coverage/*
