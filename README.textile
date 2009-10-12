@@ -44,6 +44,7 @@ When the template is generated, the following occurs:
 * User model and database migration is generated
 * Users controller is generated
 * Formtastic generator is run
+* Comatose Engine migrations are run
 * Baseline app structure is generated
 ** application_controller.rb specifics
 ** environment.rb configuration

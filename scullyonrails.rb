@@ -221,8 +221,6 @@ capify!
 file 'config/environment.rb', 
 %q{# Be sure to restart your server when you modify this file
 
-# Change this to the name of your rails project, like carbonrally.  
-# Just use the same name as the svn repo.
 PROJECT_NAME = "CHANGEME"
 
 # Specifies gem version of Rails to use when vendor/rails is not present
@@ -951,6 +949,8 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # ====================
 # FINALIZE
 # ====================
+
+generate :plugin_migration
 
 # Misc tasks
 run "rm public/index.html"
