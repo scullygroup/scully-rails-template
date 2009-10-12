@@ -16,7 +16,6 @@ plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrail
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
 plugin 'comatose_engine', :git => "git://github.com/bcalloway/comatose-engine.git"
-plugin 'validation_reflection', :git => "git://github.com/redinger/validation_reflection.git"
 
 #====================
 # GEMS
@@ -912,10 +911,13 @@ end
 # Copy Templates
 # ====================
 
+run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/plugins/comatose_engine"
+
 # Cleanup junk
 run "rm -f app/views/layouts/*"
 run "rm -f app/views/user_sessions/*"
 run "rm -f app/views/users/*"
+run "rm -rf vendor/plugins/comatose_engine/.git*"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
