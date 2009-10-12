@@ -1,4 +1,3 @@
 - semantic_form_for(@user, :html => {:class => 'validate'}) do |f|
-  
   = f.inputs :login, :email, :password, :password_confirmation
-  = f.buttons :commit
+  = f.commit_button "Sign Up"

@@ -33,7 +33,6 @@ binarylogic-authlogic, "http://github.com/binarylogic/authlogic":http://github.c
 binarylogic-searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
 justinfrench-formtastic, "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 rubyist-aasm, "http://github.com/rubyist/aasm":http://github.com/rubyist/aasm
-validatious-on-rails, "http://github.com/grimen/validatious-on-rails":http://github.com/grimen/validatious-on-rails
 
 h3.  What's setup
 
@@ -44,7 +43,6 @@ When the template is generated, the following occurs:
 * User model and database migration is generated
 * Users controller is generated
 * Formtastic generator is run
-* Validatious generator is run
 * Comatose Engine migrations are run
 * Baseline app structure is generated
 ** application_controller.rb specifics
@@ -83,7 +81,6 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____show.html.haml
   |____public
   | |____javascripts
-  | | |____validatious.min.js
   | |____stylesheets
   | | |____reset.css
 </code></pre>

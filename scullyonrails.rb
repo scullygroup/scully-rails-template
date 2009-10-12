@@ -15,7 +15,6 @@ plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
-plugin 'validation_reflection', :git => "git://github.com/redinger/validation_reflection.git"
 
 #====================
 # GEMS
@@ -33,7 +32,6 @@ gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.git
 gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
-gem 'validatious-on-rails', :source => 'http://gemcutter.org'
 
 #TODO setup mailers and observers for user auth
 #TODO setup Roles and integrate with comatose_engine
@@ -49,7 +47,7 @@ rake("gems:build")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistance_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
 generate(:controller, "users")
 
 #====================
@@ -315,9 +313,7 @@ Rails::Initializer.run do |config|
              :source => 'http://gemcutter.org'
   config.gem 'justinfrench-formtastic',
              :lib => 'formtastic', 
-             :source => 'http://gems.github.com'   
-  config.gem 'validatious-on-rails',
-             :source => 'http://gemcutter.org'              
+             :source => 'http://gems.github.com'             
   config.gem 'rubyist-aasm', 
              :lib => 'aasm',
              :source => 'http://gems.github.com'
@@ -998,7 +994,6 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # FINALIZE
 # ====================
 generate :formtastic
-generate :validatious
 generate :plugin_migration
 
 # Misc tasks
