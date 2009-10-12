@@ -199,28 +199,21 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on.
   config.gem 'RedCloth',
-             :lib => 'redcloth', 
-             :version => '~> 3.0.4'
+             :lib => 'redcloth' 
   config.gem 'mislav-will_paginate', 
              :lib => 'will_paginate', 
-             :source => 'http://gems.github.com', 
-             :version => '~> 2.3.5'
+             :source => 'http://gems.github.com'
   config.gem 'mocha', 
-             :version => '>= 0.9.2'
-  config.gem 'quietbacktrace', 
-             :version => '>= 0.1.1'
+  config.gem 'quietbacktrace'
   config.gem 'thoughtbot-factory_girl', 
              :lib => 'factory_girl', 
-             :source => 'http://gems.github.com', 
-             :version => '>= 1.1.3'
+             :source => 'http://gems.github.com' 
   config.gem 'thoughtbot-shoulda', 
              :lib => 'shoulda', 
-             :source => 'http://gems.github.com', 
-             :version => '>= 2.0.5'
+             :source => 'http://gems.github.com'
   config.gem 'newrelic_rpm',
              :source => 'http://gems.github.com'
-  config.gem 'haml',
-             :version => '2.0.9'
+  config.gem 'haml'
   config.gem 'thoughtbot-paperclip', 
              :lib => 'paperclip', 
              :source => 'http://gems.github.com'
@@ -733,10 +726,6 @@ begin
 end
 }
 
-inside('db') do
-  run "mkdir bootstrap"
-end
-
 # ====================
 # ROUTES
 # ====================
@@ -868,15 +857,15 @@ end
 # ====================
 
 # Cleanup junk
-run "rm -f app/views/layouts/*"
-run "rm -f app/views/user_sessions/*"
-run "rm -f app/views/users/*"
+# run "rm -f app/views/layouts/*"
+# run "rm -f app/views/user_sessions/*"
+# run "rm -f app/views/users/*"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
 
 # controllers
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_controller.rb -O app/controllers/user_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
 
 # models
