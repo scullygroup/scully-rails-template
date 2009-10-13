@@ -15,6 +15,7 @@ h3.  Key Features
 * User Authentication using AuthLogic
 * Email verification for user accounts created using AuthLogic
 * Comatose CMS installed as a Rails Engine
+* Comatose Rake-n-Bake support for populating page tree from Freemind sitemap, "http://github.com/scullygroup/Comatose-Rake-n-Bake/tree/":http://github.com/scullygroup/Comatose-Rake-n-Bake/tree/
 
 TODO
 * Extend Comatose CMS to include publisher roles
