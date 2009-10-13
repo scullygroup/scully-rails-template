@@ -1,0 +1,28 @@
+!!!
+%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-type" }
+    %title
+      Scully On Rails | Administration
+      
+    = stylesheet_link_tag :comatose_admin, :plugin => "comatose_engine"
+    = stylesheet_link_tag 'reset', 'admin', 'formtastic', 'theme', :media => 'all', :cache => 'admin/all'
+    = javascript_include_tag 'prototype', 'scriptaculous', :cache => true
+    = javascript_include_tag :comatose_support, :plugin => "comatose_engine"
+  
+  %body{ :class => body_class }
+    #wrapper
+      #page-container
+        #header
+          #view
+            = link_to 'View Site', '/', :target => '_blank'
+          %h1 Administration
+          .clear
+          = render :partial => '/layouts/user_bar'
+          = render :partial => '/layouts/admin_nav'
+          
+        #main
+          #content
+            = render :partial => '/layouts/flashes'
+          
+            = yield
