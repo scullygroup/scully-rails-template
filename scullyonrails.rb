@@ -968,6 +968,11 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/admin.sass -O public/stylesheets/admin.sass"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/theme.sass -O public/stylesheets/theme.sass"
 
+#images
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-check.png -O public/images/flash-check.png"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-error.png -O public/images/flash-error.png"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-warning.png -O public/images/flash-warning.png"
+
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
