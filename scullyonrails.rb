@@ -759,7 +759,7 @@ Net::SMTP.class_eval do
     raise IOError, 'SMTP session already started' if @started
 
     # use the ruby 1.8.6 library in development
-    if ENV["RAILS_ENV"] == "development" || ENV["RAILS_ENV"] == "test"
+    if RUBY_VERSION == '1.8.6'
       check_auth_args user, secret, authtype if user or secret
     else
       check_auth_args user, secret
