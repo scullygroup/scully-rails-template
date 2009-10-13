@@ -33,8 +33,7 @@ gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 
-#TODO create email validation and password recovery
-#TODO setup mailers and observers for user auth
+#TODO create password recovery for Authlogic
 #TODO setup Roles and integrate with comatose_engine
 
 #freeze!
@@ -48,7 +47,7 @@ rake("gems:build")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
+generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string", "state:string")
 generate(:controller, "users")
 
 generate(:controller, "user_verifications")
@@ -844,6 +843,8 @@ route 'map.comatose_admin "admin"'
 route 'map.login "/login", :controller => :user_sessions, :action => :new'
 route 'map.logout "/logout", :controller => :user_sessions, :action => :destroy'
 route 'map.register "/register", :controller => :users, :action => :new'
+route 'map.confim "/users/confirm/:id", :controller => :user_verifications, :action => :confirm'
+route 'map.deny "/users/deny/:id", :controller => :user_verifications, :action => :deny'
 route 'map.resources :user_sessions'
 route 'map.resources :account, :controller => :user'
 route 'map.resources :users'
@@ -972,12 +973,14 @@ run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/p
 run "rm -f app/views/layouts/*"
 run "rm -f app/views/user_sessions/*"
 run "rm -f app/views/users/*"
+run "rm -rf app/views/user_verifications"
 run "rm -rf vendor/plugins/comatose_engine/.git"
 
 # stylesheets
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/admin.sass -O public/stylesheets/admin.sass"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/theme.sass -O public/stylesheets/theme.sass"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/admin.sass -O public/stylesheets/sass/admin.sass"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/theme.sass -O public/stylesheets/sass/theme.sass"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/screen.sass -O public/stylesheets/sass/screen.sass"
 
 #images
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-check.png -O public/images/flash-check.png"
@@ -1021,7 +1024,6 @@ generate :plugin_migration
 run "rm public/index.html"
 run "haml --rails ."
 run "mkdir public/stylesheets/sass"
-run "touch public/stylesheets/sass/screen.sass"
 #run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END
 .DS_Store

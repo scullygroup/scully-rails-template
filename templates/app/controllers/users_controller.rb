@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  layout 'admin'
+  layout 'comatose_admin'
   before_filter :require_user
   
   def index
