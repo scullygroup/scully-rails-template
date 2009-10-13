@@ -10,6 +10,17 @@ To use this template, run the following command:
   rails -d mysql -m http://github.com/scullygroup/scully-rails-template/raw/master/scullyonrails.rb /path/to/app/appname
 </code></pre>
 
+h3.  Key Features
+
+* User Authentication using AuthLogic
+* Email verification for user accounts created using AuthLogic
+* Comatose CMS installed as a Rails Engine
+
+TODO
+* Extend Comatose CMS to include publisher roles
+* Extend Comatose CMS to include published/draft states and allow admin to approve/deny
+* Create roles for user authorization
+
 h3.  What's installed
 
 *Plugins*
@@ -22,15 +33,15 @@ comatose_engine', "http://github.com/bcalloway/comatose-engine":http://github.co
 
 *Gems*
 RedCloth, "http://redcloth.org":http://redcloth.org
-mislav-will_paginate, "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
+will_paginate, "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
 mocha, "http://github.com/floehopper/mocha":http://github.com/floehopper/mocha
-thoughtbot-factory_girl, "http://github.com/thoughtbot/factory_girl":http://github.com/thoughtbot/factory_girl
-thoughtbot-shoulda, "http://github.com/thoughtbot/shoulda":http://github.com/thoughtbot/shoulda
-thoughtbot-paperclip, "http://github.com/thoughtbot/paperclip":http://github.com/thoughtbot/paperclip
+factory_girl, "http://github.com/thoughtbot/factory_girl":http://github.com/thoughtbot/factory_girl
+shoulda, "http://github.com/thoughtbot/shoulda":http://github.com/thoughtbot/shoulda
+paperclip, "http://github.com/thoughtbot/paperclip":http://github.com/thoughtbot/paperclip
 newrelic_rpm, "http://github.com/smtlaissezfaire/newrelic_rpm":http://github.com/smtlaissezfaire/newrelic_rpm
 haml, "http://github.com/nex3/haml":http://github.com/nex3/haml
-binarylogic-authlogic, "http://github.com/binarylogic/authlogic":http://github.com/binarylogic/authlogic
-binarylogic-searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
+authlogic, "http://github.com/binarylogic/authlogic":http://github.com/binarylogic/authlogic
+searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
 justinfrench-formtastic, "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 rubyist-aasm, "http://github.com/rubyist/aasm":http://github.com/rubyist/aasm
 
@@ -42,7 +53,7 @@ When the template is generated, the following occurs:
 * User Sessions Controller is generated
 * User model and database migration is generated
 * Users controller is generated
-* Email verification mailers for Authlogic are setup
+* Email verification mailers for Authlogic
 * Formtastic generator is run
 * Comatose Engine migrations are run
 * Baseline app structure is generated
@@ -95,9 +106,10 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | |____flash-warning.png
   | |____javascripts
   | |____stylesheets
-  | | |____admin.sass
   | | |____reset.css
-  | | |____theme.sass
+  | | |____sass
+  | | | |____admin.sass
+  | | | |____theme.sass
 </code></pre>
 
 For a little extra help with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides an example of how to use AASM in the model.
