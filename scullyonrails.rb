@@ -669,7 +669,10 @@ config.action_controller.perform_caching             = true
 # config.action_controller.asset_host                  = "http://assets.example.com"
 
 # Disable delivery errors, bad email addresses will be ignored
+config.action_mailer.delivery_method = :smtp
 config.action_mailer.raise_delivery_errors = false
+
+Paperclip.options[:image_magick_path] = '/usr/bin'
 }
 
 file 'config/environments/staging.rb', 
@@ -684,6 +687,7 @@ config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 
 # Disable delivery errors if you bad email addresses should just be ignored
+config.action_mailer.delivery_method = :smtp
 config.action_mailer.raise_delivery_errors = false
 
 Paperclip.options[:image_magick_path] = '/usr/bin'
@@ -706,7 +710,8 @@ config.action_controller.perform_caching             = false
 config.action_view.debug_rjs                         = true
 
 # Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.raise_delivery_errors = true
 
 HOST = 'localhost'
 Paperclip.options[:image_magick_path] = '/opt/local/bin'
@@ -735,6 +740,7 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+config.action_mailer.raise_delivery_errors = true
 
 HOST = 'localhost'
 
