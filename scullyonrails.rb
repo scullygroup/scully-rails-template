@@ -829,6 +829,7 @@ end
 # ROUTES (listed in reverse order)
 # ====================
 route 'map.comatose_root "", :layout => "application"'
+route 'map.connect "/pages", :controller => :comatose_admin, :action => :index'
 route 'map.comatose_admin "admin"'
 route 'map.login "/login", :controller => :user_sessions, :action => :new'
 route 'map.logout "/logout", :controller => :user_sessions, :action => :destroy'
