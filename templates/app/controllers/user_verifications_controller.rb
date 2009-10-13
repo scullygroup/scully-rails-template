@@ -1,6 +1,6 @@
 class UserVerificationsController < ApplicationController
   
-  before_filter :load_user_using_perishable_token
+  before_filter :load_user_using_perishable_token, :except => :deny
 
   def show
     if @user

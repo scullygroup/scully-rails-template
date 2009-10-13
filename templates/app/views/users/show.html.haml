@@ -1,29 +1,29 @@
-%p
-  %b
+=%p
+  %strong
     Login:
   = h @user.login
 %p
-  %b
+  %strong
     Login count:
   = h @user.login_count
 %p
-  %b
+  %strong
     Last request at:
   = h @user.last_request_at
 %p
-  %b
+  %strong
     Last login at:
   = h @user.last_login_at
 %p
-  %b
+  %strong
     Current login at:
   = h @user.current_login_at
 %p
-  %b
+  %strong
     Last login ip:
   = h @user.last_login_ip
 %p
-  %b
+  %strong
     Current login ip:
   = h @user.current_login_ip
 = link_to 'Edit', edit_account_path
