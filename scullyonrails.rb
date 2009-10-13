@@ -387,10 +387,10 @@ Comatose.configure do |config|
   #config.helpers << ApplicationHelper
 
   # Includes AuthenticationSystem in the ComatoseController
-  #config.includes << :acts_as_authentic
+  #config.includes << Authlogic::ActsAsAuthentic
 
   # Calls :login_required as a before_filter
-  #config.authorization = :login_required
+  #config.authorization = :require_user
      
   # Includes AuthenticationSystem in the ComatoseAdminController
   config.admin_includes << Authlogic::ActsAsAuthentic
@@ -977,7 +977,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 
 # layouts
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/admin.html.haml -O app/views/layouts/admin.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/comatose_admin.html.haml -O app/views/layouts/comatose_admin.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_user_bar.html.haml -O app/views/layouts/_user_bar.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_admin_nav.html.haml -O app/views/layouts/_admin_nav.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_flashes.html.haml -O app/views/layouts/_flashes.html.haml"
