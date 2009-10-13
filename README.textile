@@ -111,5 +111,3 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____admin.sass
   | | | |____theme.sass
 </code></pre>
-
-For a little extra help with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides an example of how to use AASM in the model.
