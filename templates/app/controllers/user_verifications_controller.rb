@@ -21,7 +21,7 @@ class UserVerificationsController < ApplicationController
   end
 
   def deny
-    @user = Story.find(params[:id])
+    @user = User.find(params[:id])
     @user.deny!
     flash[:error] = "User has been denied!"
     redirect_to('/users')
