@@ -1,6 +1,6 @@
 class UserVerificationsController < ApplicationController
   
-  before_filter :load_user_using_perishable_token, :except => :deny
+  before_filter :load_user_using_perishable_token, :except => [:confirm, :deny]
 
   def show
     if @user
@@ -14,16 +14,26 @@ class UserVerificationsController < ApplicationController
 
   def confirm
     @user = User.find(params[:id])
-    @user.confirmed #reference method in model to set recently_approved?
-    @user.confirm!
-    flash[:notice] = "User has been approved!"
+    # you cannot confirm yourself
+    if @user.id == current_user.id
+      flash[:error] = "You cannot confirm your own account!"
+    else
+      @user.confirmed #reference method in model to set recently_approved?
+      @user.confirm!
+      flash[:notice] = "User has been approved!"
+    end
     redirect_to('/users')
   end
 
   def deny
     @user = User.find(params[:id])
-    @user.deny!
-    flash[:error] = "User has been denied!"
+    # you cannot deny yourself
+    if @user.id == current_user.id
+      flash[:error] = "You cannot deny your own account!"
+    else
+      @user.deny!
+      flash[:error] = "User has been denied!"
+    end
     redirect_to('/users')
   end
   
