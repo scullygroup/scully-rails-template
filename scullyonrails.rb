@@ -51,6 +51,8 @@ generate(:controller, "user_sessions")
 generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string")
 generate(:controller, "users")
 
+generate(:controller, "user_verifications")
+generate(:mailer, "notifier_mailer")
 #====================
 # APP
 #====================
@@ -269,6 +271,8 @@ file 'config/environment.rb',
 %q{# Be sure to restart your server when you modify this file
 
 PROJECT_NAME = "CHANGEME"
+
+SITE_URL = "localhost:3000"
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
@@ -983,9 +987,12 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_verifications_controller.rb -O app/controllers/user_verifications_controller.rb"
 
 # models
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user_session.rb -O app/models/user_session.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/notifier_mailer.rb -O app/models/notifier_mailer.rb"
 
 # layouts
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"
@@ -1002,6 +1009,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/index.html.haml -O app/views/users/index.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/notifier_mailer/verification_instructions.html.haml -O app/views/notifier_mailer/verification_instructions.html.haml"
 
 # ====================
 # FINALIZE

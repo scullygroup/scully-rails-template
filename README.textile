@@ -42,6 +42,7 @@ When the template is generated, the following occurs:
 * User Sessions Controller is generated
 * User model and database migration is generated
 * Users controller is generated
+* Email verification mailers for Authlogic are setup
 * Formtastic generator is run
 * Comatose Engine migrations are run
 * Baseline app structure is generated
@@ -50,9 +51,12 @@ When the template is generated, the following occurs:
 ** Capistrano envrionment-specific recipes are installed
 ** Actionmailer initializer created as action_mailer_configs.rb with Gmail settings
 ** smtp_tls.rb created for use with Gmail and ActionMailer
+** assets in public directory are migrated
 ** Misc initializers are created
 ** Basic routes are installed in routes.rb
 * Project is initalized as a git repo, all files added, and initial commit message made
+
+ActionMailer config is setup in config/initializers/action_mailer_configs.rb
 
 At the end of the generation, the base views, models, and controllers for AuthLogic as well as admin and application layouts are installed as follows:
 
@@ -60,16 +64,21 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   |____app
   | |____controllers
   | | |____user_sessions_controller.rb
+  | | |____user_verifications_controller.rb
   | | |____users_controller.rb
   | |____models
+  | | |____notifier_mailer.rb
   | | |____user.rb
+  | | |____user_session.rb
   | |____views
   | | |____layouts
   | | | |_____admin_nav.html.haml
   | | | |_____flashes.html.haml
   | | | |_____user_bar.html.haml
-  | | | |____admin.html.haml
   | | | |____application.html.haml
+  | | | |____comatose_admin.html.haml
+  | | |____notifier_mailer
+  | | | |____verification_instructions.html.haml
   | | |____user_sessions
   | | | |____new.html.haml
   | | |____users
@@ -80,9 +89,15 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____new.html.haml
   | | | |____show.html.haml
   |____public
+  | |____images
+  | | |____flash-check.png
+  | | |____flash-error.png
+  | | |____flash-warning.png
   | |____javascripts
   | |____stylesheets
+  | | |____admin.sass
   | | |____reset.css
+  | | |____theme.sass
 </code></pre>
 
 For a little extra help with AASM (which I always need to reference), there is a text file called AASM.txt that merely provides an example of how to use AASM in the model.
