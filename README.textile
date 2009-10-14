@@ -127,3 +127,5 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____admin.sass
   | | | |____theme.sass
 </code></pre>
+
+Copyright © 2009 The Scully Group, released under the MIT license
