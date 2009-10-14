@@ -21,7 +21,7 @@ h3.  Key Features
 * Comatose Rake-n-Bake support for populating page tree from Freemind sitemap, "http://github.com/scullygroup/Comatose-Rake-n-Bake/tree/":http://github.com/scullygroup/Comatose-Rake-n-Bake/tree/
 * Role-based authentication with reserved roles (admin, publisher, writer, user)
 
-*A word about Roles*
+*A Word About Roles*
 When the app is generated from the template, a few reserved roles are created:
 * Admin, full access to entire app
 * Publisher, full access to CMS
