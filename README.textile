@@ -42,9 +42,9 @@ h3.  What's installed
 hoptoad_notifier, "http://github.com/thoughtbot/hoptoad_notifier.git":http://github.com/thoughtbot/hoptoad_notifier.git
 limerick_rake, "http://github.com/thoughtbot/limerick_rake":http://github.com/thoughtbot/hoptoad_notifier.git
 jrails, "http://code.google.com/p/ennerchi":http://code.google.com/p/ennerchi
-admin_data', "http://github.com/neerajdotname/admin_data":http://github.com/neerajdotname/admin_data
-engines', "http://github.com/lazyatom/engines":http://github.com/lazyatom/engines
-comatose_engine', "http://github.com/bcalloway/comatose-engine":http://github.com/bcalloway/comatose-engine
+admin_data, "http://github.com/neerajdotname/admin_data":http://github.com/neerajdotname/admin_data
+engines, "http://github.com/lazyatom/engines":http://github.com/lazyatom/engines
+comatose_engine, "http://github.com/bcalloway/comatose-engine":http://github.com/bcalloway/comatose-engine
 
 *Gems*
 RedCloth, "http://redcloth.org":http://redcloth.org
@@ -89,14 +89,30 @@ At the end of the generation, the base views, models, and controllers for AuthLo
 <pre><code>
   |____app
   | |____controllers
+  | | |____application_controller.rb
+  | | |____comatose_admin_controller.rb
+  | | |____roles_controller.rb
   | | |____user_sessions_controller.rb
   | | |____user_verifications_controller.rb
   | | |____users_controller.rb
+  | |____helpers
+  | | |____comatose_admin_helper.rb
   | |____models
   | | |____notifier_mailer.rb
+  | | |____role.rb
   | | |____user.rb
   | | |____user_session.rb
   | |____views
+  | | |____comatose_admin
+  | | | |_____form.html.haml
+  | | | |_____page_list_item.html.haml
+  | | | |_____sortable.html.erb
+  | | | |____delete.html.haml
+  | | | |____edit.html.haml
+  | | | |____index.html.haml
+  | | | |____new.html.haml
+  | | | |____reorder.html.haml
+  | | | |____versions.html.haml
   | | |____layouts
   | | | |_____admin_nav.html.haml
   | | | |_____flashes.html.haml
@@ -105,6 +121,12 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____comatose_admin.html.haml
   | | |____notifier_mailer
   | | | |____verification_instructions.html.haml
+  | | |____roles
+  | | | |_____form.html.haml
+  | | | |_____secondary_nav.html.haml
+  | | | |____edit.html.haml
+  | | | |____index.html.haml
+  | | | |____new.html.haml
   | | |____user_sessions
   | | | |____new.html.haml
   | | |____users
@@ -113,6 +135,7 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____edit.html.haml
   | | | |____index.html.haml
   | | | |____new.html.haml
+  | | | |____no_role.html.haml
   | | | |____show.html.haml
   |____public
   | |____images
@@ -124,6 +147,7 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | |____reset.css
   | | |____sass
   | | | |____admin.sass
+  | | | |____screen.sass
   | | | |____theme.sass
 </code></pre>
 
