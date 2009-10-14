@@ -1,5 +1,8 @@
 require 'aasm'
 class User < ActiveRecord::Base
+  
+  belongs_to :role
+  
   acts_as_authentic
   
   validates_presence_of :login, :email

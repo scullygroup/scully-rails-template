@@ -1,3 +1,12 @@
 - semantic_form_for @user do |f|
-  = f.inputs :login, :email, :password, :password_confirmation
-  = f.commit_button "#{button}"
+  - f.inputs do
+    - unless @user.id == current_user.id
+      %li
+        %label
+          Select User Role
+        = f.select(:role_id, Role.all.collect {|p| [p.name.capitalize, p.id]})
+      = f.input :login
+    = f.input :email
+    = f.input :password
+    = f.input :password_confirmation
+    = f.commit_button "#{button}"

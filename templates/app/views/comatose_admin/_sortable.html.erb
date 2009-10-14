@@ -1,0 +1,3 @@
+<script type="text/javascript">
+Sortable.create("page_list_<%= page_id %>", {constraint:false, onUpdate:function(){new Ajax.Request('/admin/reorder/<%= page_id %>', {asynchronous:true, evalScripts:true, onComplete:function(request){new Effect.Highlight("page_list_<%= page_id %>",{});}, parameters:Sortable.serialize("page_list_<%= page_id %>") + '&authenticity_token=' + encodeURIComponent("<%= form_authenticity_token %>")})}})
+</script>

@@ -52,70 +52,12 @@ generate(:controller, "users")
 
 generate(:controller, "user_verifications")
 generate(:mailer, "notifier_mailer")
+
+generate(:model, "role", "name:string")
+generate(:controller, "roles")
 #====================
 # APP
 #====================
-
-file 'app/controllers/application_controller.rb',
-%q{class ApplicationController < ActionController::Base
-
-  helper :all
-
-  protect_from_forgery
-
-  include HoptoadNotifier::Catcher
-
-  filter_parameter_logging :password, :password_confirmation
-  helper_method :current_user_session, :current_user
-  
-  before_filter :start_session
-  
-  def start_session
-    unless session[:user_random]
-  		session[:user_random] = rand(99999999)
-  	end
-  end
-  
-  private
-  def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
-  end
-
-  def current_user
-    return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user
-  end
-
-  def require_user
-    unless current_user
-      store_location
-      flash[:error] = "You must be logged in to access this page"
-      redirect_to new_user_session_url
-      return false
-    end
-  end
-
-  # def require_no_user
-  #   if current_user
-  #     store_location
-  #     flash[:error] = "You must be logged out to access this page"
-  #     redirect_to account_url
-  #     return false
-  #   end
-  # end
-  
-  def store_location
-    session[:return_to] = request.request_uri
-  end
-  
-  def redirect_back_or_default(default)
-    redirect_to(session[:return_to] || default)
-    session[:return_to] = nil
-  end
-  
-end
-}
 
 file 'app/helpers/application_helper.rb', 
 %q{module ApplicationHelper
@@ -988,14 +930,21 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-warning.png -O public/images/flash-warning.png"
 
 # controllers
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/application_controller.rb -O app/controllers/application_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/comatose_admin_controller.rb -O app/controllers/comatose_admin_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_verifications_controller.rb -O app/controllers/user_verifications_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/roles_controller.rb -O app/controllers/roles_controller.rb"
+
+# helpers
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/helpers/comatose_admin_helper.rb -O app/helpers/comatose_admin_helper.rb"
 
 # models
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user_session.rb -O app/models/user_session.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/notifier_mailer.rb -O app/models/notifier_mailer.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/role.rb -O app/models/role.rb"
 
 # layouts
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"

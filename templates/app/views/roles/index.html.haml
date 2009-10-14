@@ -1,0 +1,19 @@
+%h1
+  User Roles
+
+= render :partial => '/roles/secondary_nav'
+
+%table.table
+  %tr
+    %th
+      Role Name
+
+  - @roles.each do |role|
+    %tr
+      %td
+        = h role.name.capitalize
+
+      %td
+        = link_to 'Edit', edit_role_path(role)
+        |
+        = link_to 'Destroy', role, :confirm => 'Are you sure?', :method => :delete

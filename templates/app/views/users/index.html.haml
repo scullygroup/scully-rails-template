@@ -14,6 +14,8 @@
     %th
       Last Login IP
     %th
+      Role
+    %th
       Confirmed?
   - @users.each do |user|
     %tr
@@ -25,6 +27,8 @@
         = h user.last_login_at
       %td
         = h user.last_login_ip
+      %td
+        = h user.role.name.capitalize
       %td
         %span{ :class => user.state }
           = h user.state

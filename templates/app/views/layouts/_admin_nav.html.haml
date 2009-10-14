@@ -1,7 +1,10 @@
 #main-navigation
   %ul
-    %li
-      = link_to "Admin Users", '/users'
+    - if role_call == "admin"
+      %li
+        = link_to "Admin Users", '/users'
+      %li
+        = link_to "User Roles", '/roles'
     %li
       = link_to "Pages", '/pages'     
   .clear
