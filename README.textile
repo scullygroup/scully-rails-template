@@ -33,7 +33,6 @@ From here, you can create additional "writer-level" roles that can be assigned t
 When a "writer-level" user creates/edits a page, the user in the Publisher role is sent an email prompting them to login and review the page before publishing.
 
 TODO
-* Setup new comatose_admin views and copy to main app views
 * Extend Comatose CMS to include published/draft states and allow admin to approve/deny
 * Create Baseline Tests!
 
