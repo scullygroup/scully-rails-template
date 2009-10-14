@@ -946,22 +946,47 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/notifier_mailer.rb -O app/models/notifier_mailer.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/role.rb -O app/models/role.rb"
 
-# layouts
+# views
+### comatose_admin
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_form.html.haml -O app/views/comatose_admin/_form.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_page_list_item.html.haml -O app/views/comatose_admin/_page_list_item.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_sortable.html.haml -O app/views/comatose_admin/_sortable.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/delete.html.haml -O app/views/comatose_admin/delete.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/edit.html.haml -O app/views/comatose_admin/edit.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/index.html.haml -O app/views/comatose_admin/index.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/new.html.haml -O app/views/comatose_admin/new.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/reorder.html.haml -O app/views/comatose_admin/reorder.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/versions.html.haml -O app/views/comatose_admin/versions.html.haml"
+
+### layouts
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/application.html.haml -O app/views/layouts/application.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/comatose_admin.html.haml -O app/views/layouts/comatose_admin.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_user_bar.html.haml -O app/views/layouts/_user_bar.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_admin_nav.html.haml -O app/views/layouts/_admin_nav.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/_flashes.html.haml -O app/views/layouts/_flashes.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/layouts/comatose_admin.html.haml -O app/views/layouts/comatose_admin.html.haml"
 
-# views
+### notifier_mailer
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/notifier_mailer/verification_instructions.html.haml -O app/views/notifier_mailer/verification_instructions.html.haml"
+
+### roles
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/_form.html.haml -O app/views/roles/_form.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/_secondary_nav.html.haml -O app/views/roles/_secondary_nav.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/edit.html.haml -O app/views/roles/edit.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/index.html.haml -O app/views/roles/index.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/new.html.haml -O app/views/roles/new.html.haml"
+
+### user_sessions
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/user_sessions/new.html.haml -O app/views/user_sessions/new.html.haml"
+
+### users
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_form.html.haml -O app/views/users/_form.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_secondary_nav.html.haml -O app/views/users/_secondary_nav.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/edit.html.haml -O app/views/users/edit.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/index.html.haml -O app/views/users/index.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/no_role.html.haml -O app/views/users/no_role.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/notifier_mailer/verification_instructions.html.haml -O app/views/notifier_mailer/verification_instructions.html.haml"
 
 # ====================
 # FINALIZE
