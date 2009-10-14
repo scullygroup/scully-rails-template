@@ -3,7 +3,7 @@ h1.  ScullyTown Rails Template
 A workhorse Rails 2.3 template we use for the majority of our projects, based on the original "Thoughtbot Suspenders template":http://github.com/thoughtbot/suspenders.
 
 Note:
-This is a work-in progress and continually updated.  Please use at our own risk.  Better yet, fork this project and make it better!
+This is a work-in progress and continually updated. Please feel free to fork this project and make it better!
 
 h3.  How to use
 
@@ -33,8 +33,6 @@ From here, you can create additional "writer-level" roles that can be assigned t
 When a "writer-level" user creates/edits a page, the user in the Publisher role is sent an email prompting them to login and review the page before publishing.
 
 TODO
-* Setup seed date
-* Place new Roles foreign keys in User model and ComatosePage model
 * Extend Comatose CMS to include published/draft states and allow admin to approve/deny
 * Create Baseline Tests!
 

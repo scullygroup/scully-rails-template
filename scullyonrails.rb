@@ -47,7 +47,7 @@ rake("gems:build")
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
 
-generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string", "state:string")
+generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string", "state:string", "role_id:integer")
 generate(:controller, "users")
 
 generate(:controller, "user_verifications")
@@ -694,6 +694,18 @@ require 'mocha'
 begin require 'redgreen'; rescue LoadError; end
 }
 
+file 'db/seeds.rb',
+%q{# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+#
+# Examples:
+#   
+#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
+#   Major.create(:name => 'Daley', :city => cities.first)
+
+roles = Role.create([{ :name => "admin" }, { :name => "publisher" }, { :name => "writer" }, { :name => "user" }])
+}
+
 file 'lib/smtp_tls.rb', 
 %q{require "openssl"
 require "net/smtp"
@@ -993,6 +1005,10 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # ====================
 generate :formtastic
 generate :plugin_migration
+
+#add role_id columns to comatose_engine
+run "rake add_role_id_to_comatose_pages role_id:integer"
+run "rake add_role_id_to_comatose_page_versions role_id:integer"
 
 # Misc tasks
 run "rm public/index.html"
