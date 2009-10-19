@@ -792,14 +792,19 @@ end
 route 'map.comatose_root "", :layout => "application"'
 route 'map.connect "/pages", :controller => :comatose_admin, :action => :index'
 route 'map.comatose_admin "admin"'
+route 'map.deny_page "/comatose_admin/deny/:id", :controller => :comatose_admin, :action => :deny'
+route 'map.approve_page "/comatose_admin/approve/:id", :controller => :comatose_admin, :action => :approve'
 route 'map.login "/login", :controller => :user_sessions, :action => :new'
 route 'map.logout "/logout", :controller => :user_sessions, :action => :destroy'
 route 'map.register "/register", :controller => :users, :action => :new'
-route 'map.confim "/users/confirm/:id", :controller => :user_verifications, :action => :confirm'
-route 'map.deny "/users/deny/:id", :controller => :user_verifications, :action => :deny'
+route 'map.resources :user_verifications'
 route 'map.resources :user_sessions'
+route 'map.deny "/users/deny/:id", :controller => :user_verifications, :action => :deny'
+route 'map.confim "/users/confirm/:id", :controller => :user_verifications, :action => :confirm'
 route 'map.resources :account, :controller => :user'
 route 'map.resources :users'
+route 'map.no_role "/no_role", :controller => :users, :action => :no_role'
+route 'map.resources :roles'
 
 # ====================
 # TEST
