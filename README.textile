@@ -30,7 +30,7 @@ When the app is generated from the template, a few reserved roles are created:
 
 From here, you can create additional "writer-level" roles that can be assigned to parent pages in the CMS.  For example, you could create a role called "Human Resources", which could be assigned access to the "About Us" parent page and all of it's children.  Currently, only one role can be assigned per parent.
 
-When a "writer-level" user creates/edits a page, the user in the Publisher role is sent an email prompting them to login and review the page before publishing.
+When a "writer-level" user creates/edits a page, an email is sent to the user(s) in the Publisher role prompting them to login and review the page before publishing.
 
 TODO
 * Assign roles to controller actions
