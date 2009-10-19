@@ -896,14 +896,15 @@ file 'test/test_helper.rb',
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require 'action_view/test_case'
+require "authlogic/test_case"
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
 
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 
-  self.backtrace_silencers << :rails_vendor
-  self.backtrace_filters   << :rails_root
+  #self.backtrace_silencers << :rails_vendor
+  #self.backtrace_filters   << :rails_root
 
 end
 
