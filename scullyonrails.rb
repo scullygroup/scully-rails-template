@@ -255,12 +255,12 @@ Rails::Initializer.run do |config|
   config.gem 'paperclip', 
              :lib => 'paperclip', 
              :source => 'http://gemcutter.org'
-  config.gem 'justinfrench-formtastic',
+  config.gem 'formtastic',
              :lib => 'formtastic', 
-             :source => 'http://gems.github.com'             
-  config.gem 'rubyist-aasm', 
+             :source => 'http://gemcutter.org'
+  config.gem 'aasm', 
              :lib => 'aasm',
-             :source => 'http://gems.github.com'
+             :source => 'http://gemcutter.org'
   config.gem 'authlogic',
              :lib => 'authlogic',
              :source => 'http://gemcutter.org'
