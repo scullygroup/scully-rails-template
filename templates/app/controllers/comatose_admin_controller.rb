@@ -11,6 +11,20 @@ class ComatoseAdminController < ApplicationController
   before_filter :set_content_type
   layout 'comatose_admin'
 
+  def approve
+    @page = ComatosePage.find(params[:id])
+    @page.approve!
+    flash[:notice] = "Page has been approved!"
+    redirect_to('/admin')
+  end
+
+  def deny
+    @page = ComatosePage.find(params[:id])
+    @page.deny!
+    flash[:error] = "Page has been denied!"
+    redirect_to('/admin')
+  end
+  
   # find all pages based on user role access privileges
   def my_pages
     @my_pages = ComatosePage.role_id_equals(current_user.role_id)
@@ -38,6 +52,12 @@ class ComatoseAdminController < ApplicationController
       if @page.save
         expire_cms_page @page
         expire_cms_fragment @page
+        if cms_admin
+          @page.approve!
+        else
+          @page.pending!
+          PublisherMailer.deliver_approve_page(@page)
+        end
         flash[:notice] = "Saved changes to '#{@page.title}'"
         redirect_to :controller=>self.controller_name, :action=>'index'
       end

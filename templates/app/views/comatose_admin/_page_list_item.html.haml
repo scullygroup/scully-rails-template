@@ -39,7 +39,8 @@
         %span.handle
           DRAG
       %td
-        = link_to page.title, {:action=>'edit', :id=>page}, :title=>"Path:#{page.full_path}", :class=>'page'
+        = link_to page.title, {:action=>'edit', :id => page}, :title=>"Path:#{page.full_path}", :class=>'page'
+        = render :partial => '/comatose_admin/toggle_state', :locals => { :obj => page }
     %tr
       %td.commands
         Updated

@@ -1,3 +1,5 @@
+# this file is new for email verification
+
 class NotifierMailer < ActionMailer::Base
 
   default_url_options[:host] = "#{SITE_URL}"  

@@ -2,12 +2,15 @@
 
 - form_for :page, @page, :html => { :id => "comatose-page-form" } do |f|
   %table.page-form{ :cellspacing => "0", :cellpadding => "0" }
-    - unless @page.parent && @page.parent_id != 1
-      %tr
-        %td{:colspan => 2}
-          %label{ :for => "role_id" }
-            Select User Access Role
-          = show_roles
+    - unless controller.action_name == "new"
+      = render :partial => '/comatose_admin/toggle_state', :locals => { :obj => @page }
+    - if cms_admin
+      - unless @page.parent && @page.parent_id != 1
+        %tr
+          %td{:colspan => 2}
+            %label{ :for => "role_id" }
+              Select User Access Role
+            = show_roles
     %tr
       %td.label
         %label{ :for => "page_title" }

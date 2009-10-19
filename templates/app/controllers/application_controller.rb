@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
 
   filter_parameter_logging :password, :password_confirmation
-  helper_method :current_user_session, :current_user, :role_call
+  helper_method :current_user_session, :current_user, :role_call, :cms_admin
   
   before_filter :start_session
   
@@ -26,9 +26,21 @@ class ApplicationController < ActionController::Base
   #   redirect_to(:controller => “login”, :action => “login”)
   # end
       
+  # determine the role of the current user
   def role_call
     @role = Role.find(current_user.role_id)
     return "#{@role.name}"
+  end
+  
+  # determine if the user has full privileges to the cms
+  def cms_admin
+    @role = Role.find(current_user.role_id)
+    case @role.name
+      when "admin"      : return true
+      when "publisher"  : return true
+    else
+      return false
+    end
   end
   
   def current_user_session

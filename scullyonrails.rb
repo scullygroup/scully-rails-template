@@ -46,13 +46,11 @@ rake("gems:build")
 #====================
 generate(:session, "user_session")
 generate(:controller, "user_sessions")
-
 generate(:model, "user", "login:string", "email:string", "crypted_password:string", "password_salt:string", "persistence_token:string", "single_access_token:string", "perishable_token:string", "login_count:integer", "failed_login_count:integer", "last_request_at:datetime", "current_login_at:datetime", "last_login_at:datetime", "current_login_ip:string", "last_login_ip:string", "state:string", "role_id:integer")
 generate(:controller, "users")
-
 generate(:controller, "user_verifications")
 generate(:mailer, "notifier_mailer")
-
+generate(:mailer, "publisher_mailer")
 generate(:model, "role", "name:string")
 generate(:controller, "roles")
 #====================
@@ -944,6 +942,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/application_controller.rb -O app/controllers/application_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/comatose_admin_controller.rb -O app/controllers/comatose_admin_controller.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/comatose_controller.rb -O app/controllers/comatose_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/users_controller.rb -O app/controllers/users_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_sessions_controller.rb -O app/controllers/user_sessions_controller.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/user_verifications_controller.rb -O app/controllers/user_verifications_controller.rb"
@@ -957,12 +956,15 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user_session.rb -O app/models/user_session.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/notifier_mailer.rb -O app/models/notifier_mailer.rb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/role.rb -O app/models/role.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/comatose_page.rb -O app/models/comatose_page.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/publisher_mailer.rb -O app/models/publisher_mailer.rb"
 
 # views
 ### comatose_admin
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_form.html.haml -O app/views/comatose_admin/_form.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_page_list_item.html.haml -O app/views/comatose_admin/_page_list_item.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_sortable.html.haml -O app/views/comatose_admin/_sortable.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_toggle_state.html.haml -O app/views/comatose_admin/_toggle_state.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/delete.html.haml -O app/views/comatose_admin/delete.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/edit.html.haml -O app/views/comatose_admin/edit.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/index.html.haml -O app/views/comatose_admin/index.html.haml"
@@ -980,6 +982,9 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 
 ### notifier_mailer
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/notifier_mailer/verification_instructions.html.haml -O app/views/notifier_mailer/verification_instructions.html.haml"
+
+### publisher_mailer
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/publisher_mailer/approve_page.html.haml -O app/views/publisher_mailer/approve_page.html.haml"
 
 ### roles
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/roles/_form.html.haml -O app/views/roles/_form.html.haml"
@@ -1005,10 +1010,6 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # ====================
 generate :formtastic
 generate :plugin_migration
-
-#add role_id columns to comatose_engine
-run "rake add_role_id_to_comatose_pages role_id:integer"
-run "rake add_role_id_to_comatose_page_versions role_id:integer"
 
 # Misc tasks
 run "rm public/index.html"
