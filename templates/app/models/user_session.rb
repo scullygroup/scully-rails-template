@@ -1,5 +1,5 @@
 class UserSession < Authlogic::Session::Base
-
+  
   validate :check_if_verified
 
   private

@@ -1,10 +1,10 @@
 class UserVerificationsController < ApplicationController
   
+  before_filter :require_user, :except => :show
   before_filter :load_user_using_perishable_token, :except => [:confirm, :deny]
-
+  
   def show
     if @user
-      @user.confirmed
       @user.confirm!
       flash[:notice] = "Thank you for verifying your account. You may now login."
     end
@@ -18,7 +18,6 @@ class UserVerificationsController < ApplicationController
     if @user.id == current_user.id
       flash[:error] = "You cannot confirm your own account!"
     else
-      @user.confirmed #reference method in model to set recently_approved?
       @user.confirm!
       flash[:notice] = "User has been approved!"
     end

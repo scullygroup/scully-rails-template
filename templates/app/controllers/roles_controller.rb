@@ -1,6 +1,11 @@
 class RolesController < ApplicationController
+  
   layout 'comatose_admin'
   before_filter :require_user
+  
+  before_filter do |controller|
+    controller.check_authorization({"required_user_level" => "admin"})
+  end
 
   def index
     @roles = Role.list_all_but_reserved
@@ -43,6 +48,7 @@ class RolesController < ApplicationController
     @role.destroy
 
     respond_to do |format|
+      flash[:notice] = "Role has been deleted"
       format.html { redirect_to('/roles') }
     end
   end

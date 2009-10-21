@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
 
-  layout 'comatose_admin'
-  before_filter :require_user
+  before_filter :require_user, :check_role
   
-  # before_filter :except => [:show, :search] do |controller|
-  #   controller.check_authorization({”required_user_level” => “administrator”})
-  # end
+  layout 'comatose_admin'
+  
+  before_filter :except => [:show, :edit, :update, :no_role] do |controller|
+    controller.check_authorization({"required_user_level" => "admin"})
+  end
   
   def index
     @users = User.all
@@ -27,7 +28,6 @@ class UsersController < ApplicationController
   end
   
   def show
-    #@user = @current_user
     @user = User.find(params[:id])
     
     respond_to do |format|
@@ -36,7 +36,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    #@user = @current_user
     @user = User.find(params[:id])
     
     respond_to do |format|
@@ -48,7 +47,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
-      redirect_to('/users')
+      redirect_based_on_role("/users")
     else
       render :action => :edit
     end
@@ -59,7 +58,8 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      flash[:notice] = "Account has been deleted"
+      format.html { redirect_to('/users') }
     end
   end
   

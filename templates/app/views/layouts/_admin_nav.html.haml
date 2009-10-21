@@ -1,6 +1,6 @@
 #main-navigation
   %ul
-    - if role_call == "admin"
+    - if current_user.role_id && role_call == "admin"
       %li
         = link_to "Admin Users", '/users'
       %li

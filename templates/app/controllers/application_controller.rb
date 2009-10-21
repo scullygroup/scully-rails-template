@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  
   helper :all
 
   protect_from_forgery
@@ -7,9 +9,10 @@ class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
 
   filter_parameter_logging :password, :password_confirmation
-  helper_method :current_user_session, :current_user, :role_call, :cms_admin
+  helper_method :current_user_session, :current_user, :role_call, :cms_admin, :redirect_based_on_role
   
   before_filter :start_session
+  
   
   def start_session
     unless session[:user_random]
@@ -17,15 +20,16 @@ class ApplicationController < ActionController::Base
   	end
   end
   
+  # simple role authorization
+  def check_authorization(vars)
+    unless role_call == vars["required_user_level"]
+      flash[:error] = "You are not authorized to access this!"
+      redirect_to("/account/#{current_user.id}")
+    end
+  end
+  
   private
   
-  # def check_authorization(vars)
-  #   puts "Required User Level is " + vars["required_user_level"]
-  #   unless User.find_by_id(session[:user_id])
-  #   flash[:notice] = “Please log in”
-  #   redirect_to(:controller => “login”, :action => “login”)
-  # end
-      
   # determine the role of the current user
   def role_call
     @role = Role.find(current_user.role_id)
@@ -40,6 +44,23 @@ class ApplicationController < ActionController::Base
       when "publisher"  : return true
     else
       return false
+    end
+  end
+  
+  # make sure a user cannot access records that belong to another user unless they are an admin
+  def check_role
+    if params[:id] && params[:id].to_i != current_user.id && role_call != "admin" 
+      flash[:error] = "You cannot access records outside of your account!"
+      redirect_to("/account/#{current_user.id}")
+    end
+  end
+    
+  # redirect to the target if user is an admin, otherwise redirect to their profile
+  def redirect_based_on_role(target)
+    if role_call == "admin"
+      return redirect_to("#{target}")
+    else
+      return redirect_to("/account/#{current_user.id}")
     end
   end
   
@@ -60,6 +81,12 @@ class ApplicationController < ActionController::Base
       redirect_to new_user_session_url
       return false
     end
+  end
+
+  # rescue from record not found
+  def record_not_found
+    flash[:error] = "The requested record was not found under your account!"
+    redirect_to("/account/#{current_user.id}")
   end
 
   # def require_no_user

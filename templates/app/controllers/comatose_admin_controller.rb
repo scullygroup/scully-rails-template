@@ -32,7 +32,7 @@ class ComatoseAdminController < ApplicationController
   
   # Shows the page tree
   def index
-    if role_call == "admin" || role_call == "publisher"
+    if role_call == "admin" || role_call == "publisher" || role_call == "writer"
       @root_pages = [fetch_root_page].flatten
     else
       self.my_pages
@@ -42,7 +42,11 @@ class ComatoseAdminController < ApplicationController
 
   # Edit a specfic page (posts back)
   def edit
-    @page = ComatosePage.find(params[:id])
+    if !cms_admin && role_call != "writer"
+      @page = ComatosePage.find(params[:id], :conditions => ["role_id = ?", current_user.role_id])
+    else
+      @page = ComatosePage.find(params[:id])
+    end
     #@root_pages = [fetch_root_page].flatten
     self.index
     if request.post?
@@ -54,11 +58,12 @@ class ComatoseAdminController < ApplicationController
         expire_cms_fragment @page
         if cms_admin
           @page.approve!
+          flash[:notice] = "Saved changes to '#{@page.title}'"
         else
           @page.pending!
+          flash[:notice] = "Changes to '#{@page.title}' have been submitted to a Publisher for review"
           PublisherMailer.deliver_approve_page(@page)
         end
-        flash[:notice] = "Saved changes to '#{@page.title}'"
         redirect_to :controller=>self.controller_name, :action=>'index'
       end
     end
@@ -71,7 +76,7 @@ class ComatoseAdminController < ApplicationController
       @page = ComatosePage.new(params[:page])
       @page.author = fetch_author_name
       if @page.save
-        flash[:notice] = "Created page '#{@page.title}'"
+        flash[:notice] = "The page '#{@page.title}' has been created and is awaiting approval"
         redirect_to :controller=>self.controller_name, :action=>'index'
       end
     else
@@ -203,9 +208,10 @@ class ComatoseAdminController < ApplicationController
   end
 
 protected
-
+  
+  # a user cannot access anything, they must have a real role
   def has_valid_role
-    if current_user.role.name == "user"
+    if current_user.role_id.nil? || current_user.role.name == "user"
       redirect_to '/no_role'
     end
   end

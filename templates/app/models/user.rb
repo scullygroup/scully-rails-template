@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   
   validates_presence_of :login, :email
   
+  attr_accessible :login, :email, :password, :password_confirmation, :role_id
+    
   include AASM
 
   aasm_column :state
@@ -23,14 +25,6 @@ class User < ActiveRecord::Base
 
   aasm_event :deny do
     transitions :to => :denied, :from => [:pending, :confirmed]
-  end
-
-  def confirmed
-    @confirmed = true
-  end
-
-  def recently_confirmed?
-    @confirmed
   end
   
   def deliver_verification_instructions!  

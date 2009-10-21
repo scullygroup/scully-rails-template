@@ -32,9 +32,7 @@ gem 'formtastic', :lib => 'formtastic', :source => 'http://gemcutter.org'
 gem 'aasm', :lib => 'aasm', :source => 'http://gemcutter.org'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
-
-#TODO create password recovery for Authlogic
-#TODO setup Roles and integrate with comatose_engine
+gem 'metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
 
 #freeze!
 rake("gems:install", :sudo => true)
@@ -241,12 +239,6 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate', 
              :lib => 'will_paginate', 
              :source => 'http://gemcutter.org'
-  config.gem 'mocha'
-  config.gem 'factory_girl', 
-             :lib => 'factory_girl', 
-             :source => 'http://gemcutter.org'
-  config.gem 'shoulda', 
-             :lib => 'shoulda', 
              :source => 'http://gemcutter.org'
   config.gem 'newrelic_rpm',
              :source => 'http://gemcutter.org'
@@ -267,7 +259,7 @@ Rails::Initializer.run do |config|
   config.gem 'searchlogic',
              :lib => 'searchlogic',
              :source => 'http://gemcutter.org'
-             
+                        
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -428,6 +420,199 @@ namespace :deploy do
     cleanup
   end
 end
+}
+
+file 'config/newrelic.yml',
+%q{
+  #
+  # This file configures the NewRelic RPM Agent, NewRelic RPM monitors
+  # Rails applications with deep visibility and low overhead.  For more
+  # information, visit www.newrelic.com.
+  #
+  # This configuration file is custom generated for bcalloway
+  #
+  # here are the settings that are common to all environments
+  common: &default_settings
+    # ============================== LICENSE KEY ===============================
+
+    # You must specify the licence key associated with your New Relic
+    # account.  This key binds your Agent's data to your account in the
+    # New Relic RPM service.
+    license_key: 'acb123abc123abc123abc123'
+
+    # Agent Enabled
+    # Use this setting to force the agent to run or not run.
+    # Default is 'auto' which means the agent will install and run only
+    # if a valid dispatcher such as Mongrel is running.  This prevents
+    # it from running with Rake or the console.  Set to false to
+    # completely turn the agent off regardless of the other settings.
+    # Valid values are true, false and auto.
+    # agent_enabled: auto
+
+    # Application Name
+    # Set this to be the name of your application as you'd like it show
+    # up in RPM.  RPM will then auto-map instances of your application
+    # into a RPM "application" on your home dashboard page. If you want
+    # to map this instance into multiple apps, like "AJAX Requests" and
+    # "All UI" then specify a semicolon separated list of up to three
+    # distinct names.  This setting does not prevent you from manually
+    # defining applications.
+    app_name: MyApp
+
+    # When 'enabled' is turned on, the agent collects performance data
+    # by inserting lightweight tracers on key methods inside the rails
+    # framework and asynchronously aggregating and reporting this
+    # performance data to the NewRelic RPM service at newrelic.com.
+    enabled: false
+
+    # The newrelic agent generates its own log file to keep its logging
+    # information separate from that of your application.  Specify its
+    # log level here.
+    log_level: info
+
+    # The newrelic agent communicates with the RPM service via http by
+    # default.  If you want to communicate via https to increase
+    # security, then turn on SSL by setting this value to true.  Note,
+    # this will result in increased CPU overhead to perform the
+    # encryption involved in SSL communication, but this work is done
+    # asynchronously to the threads that process your application code,
+    # so it should not impact response times.
+    ssl: false
+
+    # EXPERIMENTAL: enable verification of the SSL certificate sent by
+    # the server. This setting has no effect unless SSL is enabled
+    # above. This may block your application. Only enable it if the data
+    # you send us needs end-to-end verified certificates.
+    #
+    # This means we cannot cache the DNS lookup, so each request to the
+    # RPM service will perform a lookup. It also means that we cannot
+    # use a non-blocking lookup, so in a worst case, if you have DNS
+    # problems, your app may block indefinitely.
+    # verify_certificate: true
+
+    # Set your application's Apdex threshold value with the 'apdex_t'
+    # setting, in seconds. The apdex_t value determines the buckets used
+    # to compute your overall Apdex score. 
+    # Requests that take less than apdex_t seconds to process will be
+    # classified as Satisfying transactions; more than apdex_t seconds
+    # as Tolerating transactions; and more than four times the apdex_t
+    # value as Frustrating transactions. 
+    # For more about the Apdex standard, see
+    # http://support.newrelic.com/faqs/general/apdex
+
+    apdex_t: 0.5
+
+    # Proxy settings for connecting to the RPM server.
+    #
+    # If a proxy is used, the host setting is required.  Other settings
+    # are optional.  Default port is 8080.
+    #
+    # proxy_host: hostname
+    # proxy_port: 8080
+    # proxy_user:
+    # proxy_pass:
+
+
+    # Tells transaction tracer and error collector (when enabled)
+    # whether or not to capture HTTP params.  When true, the RoR
+    # filter_parameter_logging mechanism is used so that sensitive
+    # parameters are not recorded
+    capture_params: false
+
+
+    # Transaction tracer captures deep information about slow
+    # transactions and sends this to the RPM service once a
+    # minute. Included in the transaction is the exact call sequence of
+    # the transactions including any SQL statements issued.
+    transaction_tracer:
+
+      # Transaction tracer is enabled by default. Set this to false to
+      # turn it off. This feature is only available at the Silver and
+      # above product levels.
+      enabled: true
+
+      # Threshold in seconds for when to collect a transaction
+      # trace. When the response time of a controller action exceeds
+      # this threshold, a transaction trace will be recorded and sent to
+      # RPM. Valid values are any float value, or (default) "apdex_f",
+      # which will use the threshold for an dissatisfying Apdex
+      # controller action - four times the Apdex T value.
+      transaction_threshold: apdex_f
+
+      # When transaction tracer is on, SQL statements can optionally be
+      # recorded. The recorder has three modes, "off" which sends no
+      # SQL, "raw" which sends the SQL statement in its original form,
+      # and "obfuscated", which strips out numeric and string literals
+      record_sql: obfuscated
+
+      # Threshold in seconds for when to collect stack trace for a SQL
+      # call. In other words, when SQL statements exceed this threshold,
+      # then capture and send to RPM the current stack trace. This is
+      # helpful for pinpointing where long SQL calls originate from
+      stack_trace_threshold: 0.500
+
+    # Error collector captures information about uncaught exceptions and
+    # sends them to RPM for viewing
+    error_collector:
+
+      # Error collector is enabled by default. Set this to false to turn
+      # it off. This feature is only available at the Silver and above
+      # product levels
+      enabled: true
+
+      # Tells error collector whether or not to capture a source snippet
+      # around the place of the error when errors are View related.
+      capture_source: true    
+
+      # To stop specific errors from reporting to RPM, set this property
+      # to comma separated values
+      #
+      #ignore_errors: ActionController::RoutingError, ...
+
+    # (Advanced) Uncomment this to ensure the cpu and memory samplers
+    # won't run.  Useful when you are using the agent to monitor an
+    # external resource
+    # disable_samplers: true
+
+  # override default settings based on your application's environment
+
+  # NOTE if your application has other named environments, you should
+  # provide newrelic conifguration settings for these enviromnents here.
+
+  development:
+    <<: *default_settings
+    # turn off communication to RPM service in development mode.  
+    # NOTE: for initial evaluation purposes, you may want to temporarily 
+    # turn the agent on in development mode.
+    enabled: true
+
+    # When running in Developer Mode, the New Relic Agent will present
+    # performance information on the last 100 transactions you have
+    # executed since starting the mongrel.  to view this data, go to
+    # http://localhost:3000/newrelic
+    developer: true
+
+  test:
+    <<: *default_settings
+    # it almost never makes sense to turn on the agent when running
+    # unit, functional or integration tests or the like.
+    enabled: false
+
+  # Turn on the agent in production for 24x7 monitoring.  NewRelic
+  # testing shows an average performance impact of < 5 ms per
+  # transaction, you you can leave this on all the time without
+  # incurring any user-visible performance degredation.
+  production:
+    <<: *default_settings
+    enabled: true
+
+  # many applications have a staging environment which behaves
+  # identically to production.  Support for that environment is provided
+  # here.  By default, the staging environment has the agent turned on.
+  staging:
+    <<: *default_settings
+    enabled: true
+    app_name: MyApp (Staging)
 }
 
 file 'config/deploy/staging.rb', 
@@ -687,6 +872,19 @@ config.action_mailer.raise_delivery_errors = true
 
 HOST = 'localhost'
 
+SITE_URL = 'localhost:3000'
+
+config.gem 'metric_fu',
+           :lib => 'metric_fu',
+           :source => 'http://gemcutter.org'
+config.gem 'mocha'
+config.gem 'factory_girl', 
+          :lib => 'factory_girl', 
+          :source => 'http://gemcutter.org'
+config.gem 'shoulda', 
+          :lib => 'shoulda', 
+          :source => 'http://gemcutter.org'
+
 require 'factory_girl'
 require 'mocha'
 begin require 'redgreen'; rescue LoadError; end
@@ -779,9 +977,38 @@ end
 }
 
 file 'lib/tasks/metric_fu.rake', 
-%q{
-begin  
-    require 'metric_fu'  
+%q{begin  
+    require 'metric_fu'
+    
+    MetricFu::Configuration.run do |config|
+      #define which metrics you want to use
+      config.metrics  = [:churn, :saikuro, :stats, :flog, :flay, :reek, :roodi, :rcov]
+      config.graphs   = [:flog, :flay, :reek, :roodi, :rcov]
+      config.flay     = { :dirs_to_flay => ['app', 'lib']  } 
+      config.flog     = { :dirs_to_flog => ['app', 'lib']  }
+      config.reek     = { :dirs_to_reek => ['app', 'lib']  }
+      config.roodi    = { :dirs_to_roodi => ['app', 'lib'] }
+      config.saikuro  = { :output_directory => 'scratch_directory/saikuro', 
+                          :input_directory => ['app', 'lib'],
+                          :cyclo => "",
+                          :filter_cyclo => "0",
+                          :warn_cyclo => "5",
+                          :error_cyclo => "7",
+                          :formater => "text"} #this needs to be set to "text"
+      config.churn    = { :start_date => "1 year ago", :minimum_churn_count => 10}
+      #config.rcov[:rcov_opts] << "-Itest" 
+      config.rcov     = { :test_files => ['test/**/*_test.rb', 
+                                          'spec/**/*_spec.rb'],
+                          :rcov_opts => ["-Itest",
+                                         "--sort coverage", 
+                                         "--no-html", 
+                                         "--text-coverage",
+                                         "--no-color",
+                                         "--profile",
+                                         "--rails",
+                                         "--exclude /gems/,/Library/,spec"]}
+    end
+    
   rescue LoadError  
 end
 }
@@ -1013,6 +1240,25 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/no_role.html.haml -O app/views/users/no_role.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
+
+#tests
+### factories
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/factories/factory.rb -O test/factories/factory.rb"
+
+### functional
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/comatose_admin_controller_test.rb -O test/functional/comatose_admin_controller_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/comatose_controller_test.rb -O test/functional/comatose_controller_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/roles_controller_test.rb -O test/functional/roles_controller_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/user_sessions_controller_test.rb -O test/functional/user_sessions_controller_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/user_verifications_controller_test.rb -O test/functional/user_verifications_controller_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/functional/users_controller_test.rb -O test/functional/users_controller_test.rb"
+
+### unit
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/unit/comatose_page_test.rb -O test/unit/comatose_page_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/unit/notifier_mailer_test.rb -O test/unit/notifier_mailer_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/unit/publisher_mailer_test.rb -O test/unit/publisher_mailer_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/unit/role_test.rb -O test/unit/role_test.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/test/unit/user_test.rb -O test/unit/user_test.rb"
 
 # ====================
 # FINALIZE

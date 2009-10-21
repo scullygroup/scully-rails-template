@@ -34,8 +34,6 @@ When a "writer-level" user creates/edits a page, an email is sent to the user(s)
 
 TODO
 * Assign roles to controller actions
-* Differentiate between "Writer" and user-generated writer roles
-* Create Baseline Tests!
 
 h3.  What's installed
 

@@ -6,6 +6,8 @@ class Role < ActiveRecord::Base
   
   before_create :lowercase_role
   
+  attr_accessible :name
+  
   def lowercase_role
     self.name = name.downcase
   end
