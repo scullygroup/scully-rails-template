@@ -90,6 +90,7 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | |____controllers
   | | |____application_controller.rb
   | | |____comatose_admin_controller.rb
+  | | |____comatose_controller.rb
   | | |____roles_controller.rb
   | | |____user_sessions_controller.rb
   | | |____user_verifications_controller.rb
@@ -97,7 +98,9 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | |____helpers
   | | |____comatose_admin_helper.rb
   | |____models
+  | | |____comatose_page.rb
   | | |____notifier_mailer.rb
+  | | |____publisher_mailer.rb
   | | |____role.rb
   | | |____user.rb
   | | |____user_session.rb
@@ -106,6 +109,7 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |_____form.html.haml
   | | | |_____page_list_item.html.haml
   | | | |_____sortable.html.erb
+  | | | |_____toggle_state.html.haml
   | | | |____delete.html.haml
   | | | |____edit.html.haml
   | | | |____index.html.haml
@@ -120,6 +124,8 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | | |____comatose_admin.html.haml
   | | |____notifier_mailer
   | | | |____verification_instructions.html.haml
+  | | |____publisher_mailer
+  | | | |____approve_page.html.haml
   | | |____roles
   | | | |_____form.html.haml
   | | | |_____secondary_nav.html.haml
@@ -142,12 +148,29 @@ At the end of the generation, the base views, models, and controllers for AuthLo
   | | |____flash-error.png
   | | |____flash-warning.png
   | |____javascripts
+  | | |____scriptaculous.js
   | |____stylesheets
   | | |____reset.css
   | | |____sass
   | | | |____admin.sass
   | | | |____screen.sass
   | | | |____theme.sass
+  |____test
+  | |____factories
+  | | |____factory.rb
+  | |____functional
+  | | |____comatose_admin_controller_test.rb
+  | | |____comatose_controller_test.rb
+  | | |____roles_controller_test.rb
+  | | |____user_sessions_controller_test.rb
+  | | |____user_verifications_controller_test.rb
+  | | |____users_controller_test.rb
+  | |____unit
+  | | |____comatose_page_test.rb
+  | | |____notifier_mailer_test.rb
+  | | |____publisher_mailer_test.rb
+  | | |____role_test.rb
+  | | |____user_test.rb
 </code></pre>
 
 Copyright © 2009 The Scully Group, released under the MIT license
