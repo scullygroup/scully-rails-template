@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   layout 'comatose_admin'
   
   before_filter :except => [:show, :edit, :update, :no_role] do |controller|
-    controller.check_authorization({"required_user_level" => "admin"})
+    controller.check_authorization(["admin"])
   end
   
   def index
@@ -20,7 +20,8 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = "Thanks for signing up, we've delivered an email to you with instructions on how to complete your registration!"
-      @user.deliver_verification_instructions! # this is new for email verification
+      # Send email verification to user
+      @user.deliver_verification_instructions!
       redirect_to('/users')
     else
       render :action => :new

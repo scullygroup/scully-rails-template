@@ -3,6 +3,7 @@ class UserVerificationsController < ApplicationController
   before_filter :require_user, :except => :show
   before_filter :load_user_using_perishable_token, :except => [:confirm, :deny]
   
+  # Action for user clicking the verificaton link in the email that was sent when registering
   def show
     if @user
       @user.confirm!
@@ -12,6 +13,7 @@ class UserVerificationsController < ApplicationController
     redirect_to '/login'
   end
 
+  # Action when confirming a user
   def confirm
     @user = User.find(params[:id])
     # you cannot confirm yourself
@@ -24,6 +26,7 @@ class UserVerificationsController < ApplicationController
     redirect_to('/users')
   end
 
+  # Action when denying a user
   def deny
     @user = User.find(params[:id])
     # you cannot deny yourself
@@ -38,6 +41,7 @@ class UserVerificationsController < ApplicationController
   
   private
 
+  # Finds the token set for the user in the verification email
   def load_user_using_perishable_token
     @user = User.find_using_perishable_token(params[:id])
     flash[:notice] = "Unable to find your account." unless @user

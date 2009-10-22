@@ -4,7 +4,7 @@ module ComatoseAdminHelper
     !Comatose.config.hidden_meta_fields.include? key
   end
   
-  # show all available roles in drop-down
+  # Show all available roles in drop-down
   def show_roles
     @role = Role.name_does_not_equal("user")
     return select(:page, :role_id, @role.collect {|p| [p.name.capitalize, p.id]})
@@ -18,6 +18,7 @@ module ComatoseAdminHelper
     nodes.each {|node| select_box += add_select_tree_node(node, selected, level, hide) }
     select_box += ''
   end
+  
   # Called by tree_select_box
   def add_select_tree_node(node, selected, level, hide)
     padding = "&nbsp;" * level * 4

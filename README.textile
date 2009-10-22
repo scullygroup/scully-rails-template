@@ -32,9 +32,6 @@ From here, you can create additional "writer-level" roles that can be assigned t
 
 When a "writer-level" user creates/edits a page, an email is sent to the user(s) in the Publisher role prompting them to login and review the page before publishing.
 
-TODO
-* Assign roles to controller actions
-
 h3.  What's installed
 
 *Plugins*
@@ -58,6 +55,56 @@ authlogic, "http://github.com/binarylogic/authlogic":http://github.com/binarylog
 searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
 justinfrench-formtastic, "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 rubyist-aasm, "http://github.com/rubyist/aasm":http://github.com/rubyist/aasm
+
+h3. Before Filters
+
+There are a few before filters defined in the app that can be used across other models.
+
+<pre><code>
+  require_user
+</code></pre>
+Before filter that requires a user to be logged-in to access controller actions
+
+<pre><code>
+  check_authorization(vars)
+</code></pre>
+Simple role authorization, checks to see if current user's role in present in the vars array.<br />
+For example, a before_filter is placed at the top of any controller that needs authorization. Actions can be specified, as well as an array of roles:
+<pre><code>
+ before_filter :except => [:show, :edit, :update, :no_role] do |controller|
+   controller.check_authorization(["admin", "writer"])
+ end
+</code></pre>
+
+<pre><code>
+  check_role
+</code></pre>
+A before filter that ensures a user cannot access another user's records unless they are an admin
+
+h3. Helper Methods
+
+There are also a few key helper methods defined in the app that can be used across other models.
+
+<pre><code>
+  current_user
+</code></pre>
+Returns the current, logged-in user
+
+<pre><code>
+  role_call
+</code></pre>
+Returns the role name of the current user
+
+<pre><code>
+  cms_admin
+</code></pre>
+Returns true if the current user has the "admin" or "publisher" role
+
+<pre><code>
+  redirect_based_on_role(target)
+</code></pre>
+Redirect for controller actions that redirects to the target if user is an admin, otherwise redirect to their profile.
+For example, if the use is an admin, this will redirect them to the "/users" url <code>redirect_based_on_role("/users")</code>
 
 h3.  What's setup
 

@@ -12,6 +12,7 @@ class Role < ActiveRecord::Base
     self.name = name.downcase
   end
   
+  # Only show custom writer-level roles, prevents an admin from changing default system roles
   def self.list_all_but_reserved
     Role.name_not_like_all("admin", "publisher", "writer", "user")
   end

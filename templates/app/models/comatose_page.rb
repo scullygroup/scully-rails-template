@@ -46,9 +46,9 @@ class ComatosePage < ActiveRecord::Base
   end
 
   # Only versions the content... Not all of the meta data or position
-  acts_as_versioned :table_name=>'comatose_page_versions',
-                    :if_changed =>
-                      [:title, :slug, :keywords, :body]
+  acts_as_versioned :table_name => 'comatose_page_versions',
+                    :if_changed => [:title, :slug, :keywords, :body]
+                    
   self.non_versioned_columns << 'state'
   self.non_versioned_columns << 'role_id'
   
@@ -122,7 +122,7 @@ class ComatosePage < ActiveRecord::Base
 
 # Static helpers...
 
-  # Returns a Page with a matching path.
+  # Returns a Page with a matching path that has the state "approved"
   def self.find_by_path( path )
      path = path.split('.')[0] unless path.empty? # Will ignore file extension...
      path = path[1..-1] if path.starts_with? "/"
@@ -130,6 +130,7 @@ class ComatosePage < ActiveRecord::Base
      find( :first, :conditions=>[ 'full_path = ? AND state = ?', path, "approved" ] )
   end
 
+  # If a requested page that has the state "pending" is encountered, find the previous version
   def self.find_previous_version( path )
      path = path.split('.')[0] unless path.empty? # Will ignore file extension...
      path = path[1..-1] if path.starts_with? "/"
