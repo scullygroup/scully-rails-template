@@ -13,6 +13,20 @@ class ApplicationController < ActionController::Base
   
   before_filter :start_session
   
+  # Simple role authorization, checks to see if current user's role in present in the vars array
+  # For example, this before_filter is placed at the top of the controller.
+  # Actions can be specified, as well as an array of roles.
+  #
+  # before_filter :except => [:show, :edit, :update, :no_role] do |controller|
+  #   controller.check_authorization(["admin", "writer"])
+  # end
+  # 
+  def check_authorization(vars)
+    unless "#{vars}".include?(role_call)
+      flash[:error] = "You are not authorized to access this!"
+      redirect_to("/account/#{current_user.id}")
+    end
+  end
   
   def start_session
     unless session[:user_random]
@@ -59,21 +73,6 @@ class ApplicationController < ActionController::Base
   end
   
   private
-  
-  # Simple role authorization, checks to see if current user's role in present in the vars array
-  # For example, this before_filter is placed at the top of the controller.
-  # Actions can be specified, as well as an array of roles.
-  #
-  # before_filter :except => [:show, :edit, :update, :no_role] do |controller|
-  #   controller.check_authorization(["admin", "writer"])
-  # end
-  # 
-  def check_authorization(vars)
-    unless "#{vars}".include?(role_call)
-      flash[:error] = "You are not authorized to access this!"
-      redirect_to("/account/#{current_user.id}")
-    end
-  end
   
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
