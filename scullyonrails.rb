@@ -312,12 +312,15 @@ Comatose.configure do |config|
   config.default_tree_level   = 3
   config.disable_caching      = true
   config.hidden_meta_fields   = 'filter'
+  config.allow_import_export  = true
   
-  # might want to set these to false at go-live
-  #config.allow_import_export  = true
-  #config.allow_clear_cache    = true
-  #config.allow_add_child      = true
-  #config.allow_reordering     = true
+  # custom options
+  config.allow_more_link      = true
+  config.allow_import_export  = false
+  config.allow_clear_cache    = false
+  config.allow_add_child      = true
+  config.allow_delete         = true
+  config.allow_reordering     = true
   
   #config.helpers << ApplicationHelper
 

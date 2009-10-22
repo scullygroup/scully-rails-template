@@ -4,6 +4,38 @@ class ComatoseAdminControllerTest < ActionController::TestCase
   
   setup :activate_authlogic
   
+  ### Authorization Tests #########################################
+    context "A user who is not logged-in" do
+      setup do
+        get :index
+      end
+
+      should_redirect_to("Login page") { '/user_sessions/new' }
+    end
+
+    context "A user" do
+      context "with the role of user accessing pages" do
+        setup do
+          @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 4)
+          UserSession.create(@user)
+          get :index
+        end
+        
+        should_redirect_to("The no role page") { "/no_role" }
+      end
+      
+      context "with no role accessing pages" do
+        setup do
+          @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => nil)
+          UserSession.create(@user)
+          get :index
+        end
+
+        should_redirect_to("The no role page") { "/no_role" }
+      end
+    end
+  #################################################################
+  
   context "On APPROVE" do
     setup do
       @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')

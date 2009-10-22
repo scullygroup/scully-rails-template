@@ -22,7 +22,7 @@ Factory.define :comatose_page do |f|
   f.body              'Lorem ipsum dolor sit amet, consectetur adipisicing'
   f.version           2
   #f.role_id           1
-  f.state             'approved'
+  #f.state             'approved'
   f.created_on        Time.now
   f.updated_on        Time.now
   f.association       :role_id, :factory => :role

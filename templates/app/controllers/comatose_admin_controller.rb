@@ -8,6 +8,7 @@ class ComatoseAdminController < ApplicationController
                            'comatose_engine', 'views', 'layouts' )
 
   before_filter :handle_authorization, :has_valid_role
+  
   before_filter :set_content_type
   layout 'comatose_admin'
 
@@ -43,7 +44,13 @@ class ComatoseAdminController < ApplicationController
   # Edit a specfic page (posts back)
   def edit
     if !cms_admin && role_call != "writer"
-      @page = ComatosePage.find(params[:id], :conditions => ["role_id = ?", current_user.role_id])
+      # Find page with role_id of user or page that has a parent with role_id of user
+      @p = ComatosePage.find(params[:id])
+      @role_id = @p.role_id
+      if @role_id.nil?
+        @role_id = @p.parent.role_id
+      end
+      @page = ComatosePage.find(params[:id], :conditions => ["#{@role_id} = ?", current_user.role_id])
     else
       @page = ComatosePage.find(params[:id])
     end
