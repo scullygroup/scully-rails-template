@@ -66,6 +66,13 @@ end
 #====================
 # INITIALIZERS
 #====================
+# For authorization using admin_data
+initializer 'admin_data_setting.rb'
+%q{AdminDataConfig.set = {
+  :view_security_check => lambda { |controller| return true if controller.check_authorization(["admin"]) },
+  :update_security_check => lambda { |controller| return true if controller.check_authorization(["admin"]) }
+}
+}
 
 # Because the formtastic generator is not working for some reason
 initializer 'formtastic.rb',
