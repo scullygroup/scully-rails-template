@@ -910,6 +910,7 @@ file 'db/seeds.rb',
 #   Major.create(:name => 'Daley', :city => cities.first)
 
 roles = Role.create([{ :name => "admin" }, { :name => "publisher" }, { :name => "writer" }, { :name => "user" }])
+users = User.create!([:login => "admin", :email => "admin@example.com", :password => "password", :password_confirmation => "password", :role_id => 1])
 }
 
 file 'lib/smtp_tls.rb', 
@@ -987,15 +988,19 @@ end
 }
 
 file 'lib/tasks/project_setup.rake',
-%Q{namespace :setup do
+%Q{namespace :project do
    desc 'Creates radiant pages from html sitemap generated from a Freemind mindmap.'
-   task :project, :needs => :environment do
+   task :setup, :needs => :environment do
      sh "script/generate plugin_migration"
      sh "rake db:migrate"
      sleep 1.5
      sh "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
      sh "rake db:migrate"
      sh "rake db:seed"
+     
+     # confirm the default user
+     @user = User.find_by_email("admin@example.com")
+     @user.confirm!
    end
 end
 }

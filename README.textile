@@ -24,6 +24,13 @@ This will:
 * Run all pending migrations
 * Populate Roles table with seed data
 
+An initial admin user is also setup with the following credentials:
+* Login: admin
+* Email: admin@example.com
+* Password: password
+
+You might want to change this after your app is setup ;)
+
 h3.  Key Features
 
 * User Authentication using AuthLogic
