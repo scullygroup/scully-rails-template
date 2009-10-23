@@ -15,6 +15,7 @@ plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
+run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/plugins/comatose_engine"
 
 #====================
 # GEMS
@@ -985,6 +986,20 @@ Net::SMTP.class_eval do
 end
 }
 
+file 'lib/tasks/project_setup.rake',
+%Q{namespace :setup do
+   desc 'Creates radiant pages from html sitemap generated from a Freemind mindmap.'
+   task :project, :needs => :environment do
+     sh "script/generate plugin_migration"
+     sh "rake db:migrate"
+     sleep 1.5
+     sh "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
+     sh "rake db:migrate"
+     sh "rake db:seed"
+   end
+end
+}
+
 file 'lib/tasks/metric_fu.rake', 
 %q{begin  
     require 'metric_fu'
@@ -1161,8 +1176,6 @@ end
 # Copy Templates
 # ====================
 
-run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/plugins/comatose_engine"
-
 # Cleanup junk
 run "rm -f app/views/layouts/*"
 run "rm -f app/views/user_sessions/*"
@@ -1274,9 +1287,6 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # ====================
 generate :formtastic
 
-# Run migration to add indexes to user table
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
-
 # Misc tasks
 run "rm public/index.html"
 run "haml --rails ."
@@ -1302,10 +1312,15 @@ puts "
 *
 *  All Done!!
 *    
-*  Be sure to configure database.yml and then run the following commands:
+*  Be sure to configure database.yml and then run the following:
 * 
-*    script/generate plugin_migration
-*    rake db:migrate
+*    rake project:setup
+*
+*  This will:
+*    * Generate the comatose plugin_migration
+*    * Generate a migration to index the users table
+*    * Run all pending migrations
+*    * Populate Roles table with seed data
 *
 **********************************************************************************************
 "

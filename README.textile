@@ -13,6 +13,17 @@ To use this template, run the following command:
   rails -d mysql -m http://github.com/scullygroup/scully-rails-template/raw/master/scullyonrails.rb /path/to/app/appname
 </code></pre>
 
+When the template setup has finished, be sure to configure database.yml and then run the following:
+<pre><code>
+  rake project:setup
+</code></pre>
+
+This will:
+* Generate the comatose plugin_migration
+* Generate a migration to index the users table
+* Run all pending migrations
+* Populate Roles table with seed data
+
 h3.  Key Features
 
 * User Authentication using AuthLogic
