@@ -1189,10 +1189,12 @@ run "rm -rf app/views/user_verifications"
 run "rm -rf vendor/plugins/comatose_engine/.git"
 
 # stylesheets
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/admin.sass -O public/stylesheets/sass/admin.sass"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/theme.sass -O public/stylesheets/sass/theme.sass"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/screen.sass -O public/stylesheets/sass/screen.sass"
+
+
+run "curl -o public/stylesheets/reset.css http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css"
+run "curl -o public/stylesheets/sass/admin.sass http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/admin.sass"
+run "curl -o public/stylesheets/sass/theme.sass http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/theme.sass"
+run "curl -o public/stylesheets/sass/screen.sass http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/screen.sass "
 
 # javascripts
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/javascripts/scriptaculous -O public/javascripts/scriptaculous"
