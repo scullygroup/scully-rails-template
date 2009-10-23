@@ -5,6 +5,9 @@ A workhorse Rails 2.3 template we use for the majority of our projects, based on
 Note:
 This is a work-in progress and continually updated. Please feel free to fork this project and make it better!
 
+TODO
+* send email to multiple publishers when a page is added/edited
+
 h3.  How to use
 
 To use this template, run the following command:
@@ -55,6 +58,8 @@ authlogic, "http://github.com/binarylogic/authlogic":http://github.com/binarylog
 searchlogic, "http://github.com/binarylogic/searchlogic":http://github.com/binarylogic/searchlogic
 justinfrench-formtastic, "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 rubyist-aasm, "http://github.com/rubyist/aasm":http://github.com/rubyist/aasm
+
+Note: Gems are sourced from GemCutter.  If you have not installed the GemCutter gem, please follow the instructions "here":http://gemcutter.org/pages/gem_docs
 
 h3. Before Filters
 

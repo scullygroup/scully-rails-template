@@ -1276,6 +1276,9 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 generate :formtastic
 generate :plugin_migration
 
+# Run migration to add indexes to user table
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
+
 # Misc tasks
 run "rm public/index.html"
 run "haml --rails ."
