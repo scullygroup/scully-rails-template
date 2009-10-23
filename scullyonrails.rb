@@ -1297,8 +1297,6 @@ git :init
 git :add => "."
 git :commit => "-a -m 'Initial project commit'"
 
-run "script/generate plugin_migration"
-
 puts "
 **********************************************************************************************
 *
