@@ -10,6 +10,11 @@ class ComatoseAdminController < ApplicationController
   before_filter :handle_authorization, :has_valid_role
   
   before_filter :set_content_type
+  
+  before_filter :only => [:delete] do |controller|
+    controller.check_authorization(["admin", "publisher"])
+  end
+  
   layout 'comatose_admin'
 
   def approve
@@ -26,7 +31,7 @@ class ComatoseAdminController < ApplicationController
     redirect_to('/admin')
   end
   
-  # find all pages based on user role access privileges
+  # Find all pages that belong to a user role, based on user role access privileges setup by the admin/publisher on a parent page
   def my_pages
     @my_pages = ComatosePage.role_id_equals(current_user.role_id)
   end
@@ -69,7 +74,7 @@ class ComatoseAdminController < ApplicationController
         else
           @page.pending!
           flash[:notice] = "Changes to '#{@page.title}' have been submitted to a Publisher for review"
-          PublisherMailer.deliver_approve_page(@page)
+          @page.deliver_publisher_notification
         end
         redirect_to :controller=>self.controller_name, :action=>'index'
       end
@@ -130,7 +135,7 @@ class ComatoseAdminController < ApplicationController
 
   # Deletes the specified page
   def delete
-    @page = ComatosePage.find params[:id]
+    @page = ComatosePage.find(params[:id])
     if request.post?
       expire_cms_pages_from_bottom @page
       expire_cms_fragments_from_bottom @page

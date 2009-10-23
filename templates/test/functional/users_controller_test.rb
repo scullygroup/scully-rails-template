@@ -15,9 +15,20 @@ class UsersControllerTest < ActionController::TestCase
 
   context "A non-admin user accessing controller actions" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 2)
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
       UserSession.create(@user)
       get :index
+    end
+    
+    should_set_the_flash_to "You are not authorized to access this!"
+    should_redirect_to("The Users profile page") { "/account/#{@user.id}" }
+  end
+  
+  context "A user who is not admin trying to access admin_data" do
+    setup do
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
+      UserSession.create(@user)
+      get '/admin_data'
     end
     
     should_set_the_flash_to "You are not authorized to access this!"
@@ -118,7 +129,7 @@ class UsersControllerTest < ActionController::TestCase
     
     context "a user accessesing another profile" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 2)
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
         UserSession.create(@user)
         get :show, :id => Factory(:user).id
       end
@@ -142,7 +153,7 @@ class UsersControllerTest < ActionController::TestCase
     
     context "a user accessesing their own profile" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 2)
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
         UserSession.create(@user)
         get :edit, :id => @user.id
       end

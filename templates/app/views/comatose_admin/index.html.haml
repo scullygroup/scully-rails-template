@@ -1,5 +1,6 @@
 .action
-  = link_to 'Clear Page Cache', :controller=>controller.controller_name, :action=>'expire_page_cache'
+  - if Comatose.config.allow_clear_cache
+    = link_to 'Clear Page Cache', :controller=>controller.controller_name, :action=>'expire_page_cache'
   - if Comatose.config.allow_import_export
     = link_to 'Import', '#', :id => 'import_link2', :onclick => "$('import_form').setStyle({display: 'inline'}); return false;"
     = link_to 'Export', :controller=>controller.controller_name, :action=>'export'

@@ -74,6 +74,46 @@ class ComatoseAdminControllerTest < ActionController::TestCase
     should_set_the_flash_to "The page 'My Page' has been created and is awaiting approval"
   end
   
+  context "When deleting a page" do
+    context "as a writer" do
+      setup do
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "writer").id)
+        UserSession.create(@user)
+        @page = Factory.build(:comatose_page, :role_id => Factory(:role, :name => "writer").id)
+        post :delete, :id => @page.id
+      end
+
+      should_set_the_flash_to "You are not authorized to access this!"
+      should_redirect_to("The Users profile page") { "/account/#{@user.id}" }
+      should_not_change("Number of pages") { ComatosePage.count }
+    end
+    
+    context "as a custom user-created writer" do
+      setup do
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admissions").id)
+        UserSession.create(@user)
+        @page = Factory.build(:comatose_page, :role_id => Factory(:role, :name => "writer").id)
+        post :delete, :id => @page.id
+      end
+
+      should_set_the_flash_to "You are not authorized to access this!"
+      should_redirect_to("The Users profile page") { "/account/#{@user.id}" }
+      should_not_change("Number of pages") { ComatosePage.count }
+    end
+    
+    context "as a publisher" do
+      setup do
+        @user = Factory(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
+        UserSession.create(@user)
+        @page = Factory(:comatose_page)
+        post :delete, :id => @page.id
+      end
+      
+      should_set_the_flash_to "Deleted page 'Contact Us'"
+      should_redirect_to("The list of pages") { "/admin" }
+    end
+  end
+  
   context "When updating a page" do
     context "as a custom writer who is not supposed to access that page" do
       setup do

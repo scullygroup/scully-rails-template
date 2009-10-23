@@ -120,6 +120,13 @@ class ComatosePage < ActiveRecord::Base
     TextFilters.transform(text, binding, filter_type, Comatose.config.default_processor)
   end
 
+  def deliver_publisher_notification
+    @users = User.role_name_is("publisher")
+    for user in @users
+      PublisherMailer.deliver_approve_page(self, user)
+    end
+  end
+  
 # Static helpers...
 
   # Returns a Page with a matching path that has the state "approved"

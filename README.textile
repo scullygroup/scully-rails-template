@@ -5,9 +5,6 @@ A workhorse Rails 2.3 template we use for the majority of our projects, based on
 Note:
 This is a work-in progress and continually updated. Please feel free to fork this project and make it better!
 
-TODO
-* send email to multiple publishers when a page is added/edited
-
 h3.  How to use
 
 To use this template, run the following command:

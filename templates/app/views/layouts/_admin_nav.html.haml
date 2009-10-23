@@ -6,5 +6,9 @@
       %li
         = link_to "User Roles", '/roles'
     %li
-      = link_to "Pages", '/pages'     
+      = link_to "Pages", '/pages'
+      
+    - if current_user.role_id && role_call == "admin"
+      %li
+        = link_to "Database", '/admin_data', :target => "_blank"
   .clear
