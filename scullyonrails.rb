@@ -246,7 +246,6 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate', 
              :lib => 'will_paginate', 
              :source => 'http://gemcutter.org'
-             :source => 'http://gemcutter.org'
   config.gem 'newrelic_rpm',
              :source => 'http://gemcutter.org'
   config.gem 'haml',
