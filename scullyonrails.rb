@@ -1297,15 +1297,17 @@ git :init
 git :add => "."
 git :commit => "-a -m 'Initial project commit'"
 
-generate :plugin_migration
+run "script/generate plugin_migration"
 
 puts "
 **********************************************************************************************
 *
 *  All Done!!
 *    
-*  Be sure to configure database.yml
-*  and then run rake db:migrate to run pending migrations
+*  Be sure to configure database.yml and then run the following commands:
+* 
+*    script/generate plugin_migration
+*    rake db:migrate
 *
 **********************************************************************************************
 "
