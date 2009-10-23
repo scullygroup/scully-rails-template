@@ -40,6 +40,10 @@ rake("gems:install", :sudo => true)
 rake("gems:unpack")
 rake("gems:build")
 
+# Create directories
+run "mkdir public/stylesheets/sass"
+run "mkdir app/views/comatose_admin"
+
 #====================
 # Generators
 #====================
@@ -1296,7 +1300,6 @@ generate :formtastic
 # Misc tasks
 run "rm public/index.html"
 run "haml --rails ."
-run "mkdir public/stylesheets/sass"
 #run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END
 .DS_Store
