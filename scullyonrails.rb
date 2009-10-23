@@ -1273,7 +1273,6 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 # FINALIZE
 # ====================
 generate :formtastic
-generate :plugin_migration
 
 # Run migration to add indexes to user table
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
@@ -1297,6 +1296,8 @@ END
 git :init
 git :add => "."
 git :commit => "-a -m 'Initial project commit'"
+
+generate :plugin_migration
 
 puts "
 **********************************************************************************************
