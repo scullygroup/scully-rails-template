@@ -31,6 +31,8 @@ An initial admin user is also setup with the following credentials:
 
 You might want to change this after your app is setup ;)
 
+You can login to the app by going to /login.
+
 h3.  Key Features
 
 * User Authentication using AuthLogic

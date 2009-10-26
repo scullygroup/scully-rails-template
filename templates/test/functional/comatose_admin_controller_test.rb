@@ -140,6 +140,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
       setup do
         @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "writer").id)
         UserSession.create(@user)
+        @publisher = Factory.create(:user, :email => 'publisher@example.com', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
         post :edit, :id => Factory(:comatose_page).to_param, :page => { }
       end
 
@@ -149,7 +150,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
         assert_sent_email do |email|
           email.content_type = 'text/html; charset=utf-8'
           email.from = 'admin@scullytown.com'
-          email.to = Factory(:user).email
+          email.to = @publisher.email
           email.subject = "A Page Has Been Modified"
           email.date = Time.now
           email.body.include?('Please login to approve or deny the update')
