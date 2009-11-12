@@ -318,16 +318,13 @@ load 'config/deploy'
 }
 
 file 'config/database.yml', 
-%q{
-
-development:
+%q{development:
   adapter: mysql
   database: <%= PROJECT_NAME %>_development
   username: root
   password: 
   host: localhost
   encoding: utf8
-  socket: /var/mysql/mysql.sock
     
 test:
   adapter: mysql
