@@ -947,6 +947,9 @@ file 'lib/tasks/project_setup.rake',
      sh "rake db:migrate"
      sh "rake db:seed"
      
+     # Convert comatose sass file to css and move to proper directory
+     sh "sass public/plugin_assets/comatose_engine/stylesheets/sass/comatose_admin.sass public/plugin_assets/comatose_engine/stylesheets/comatose_admin.css"
+     
      # confirm the default user
      @user = User.find_by_email("admin@example.com")
      @user.confirm!
@@ -1245,6 +1248,7 @@ generate :formtastic
 # Misc tasks
 run "rm public/index.html"
 run "haml --rails ."
+
 #run 'find . \( -type d -empty \) -and \( -not -regex ./\.git.* \) -exec touch {}/.gitignore \;'
 file '.gitignore', <<-END
 .DS_Store
