@@ -38,7 +38,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On INDEX" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       get :index
     end
@@ -50,7 +50,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On NEW" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       get :new
     end
@@ -62,7 +62,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On CREATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       post :create, :user => {
         :login                  => 'bobby',
@@ -89,7 +89,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On failed CREATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       post :create, :user => {
         :login                  => nil,
@@ -105,7 +105,7 @@ class UsersControllerTest < ActionController::TestCase
   context "On SHOW" do
     context "a user accessesing their own profile" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
         UserSession.create(@user)
         get :show, :id => Factory(:user).id
       end
@@ -117,7 +117,7 @@ class UsersControllerTest < ActionController::TestCase
     
     context "an admin accessesing a user's profile" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
         UserSession.create(@user)
         get :show, :id => Factory(:user).id
       end
@@ -141,7 +141,7 @@ class UsersControllerTest < ActionController::TestCase
   context "On EDIT" do
     context "an admin accessesing a user's profile" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
         UserSession.create(@user)
         get :edit, :id => Factory(:user).id
       end
@@ -178,7 +178,7 @@ class UsersControllerTest < ActionController::TestCase
   context "On UPDATE" do
     context "if admin" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
         UserSession.create(@user)
         put :update, :id => Factory(:user).to_param, :user => { }
       end
@@ -201,7 +201,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On failed UPDATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       User.any_instance.stubs(:save).returns(false)
       put :update, :id => Factory(:user).to_param, :user => { }
@@ -212,7 +212,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "On DESTROY" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       @old_user = Factory.create(:user, :login => 'olduser', :password => '123456')
       post :destroy, :id => @old_user.id

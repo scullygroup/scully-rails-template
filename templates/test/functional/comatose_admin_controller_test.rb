@@ -16,7 +16,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
     context "A user" do
       context "with the role of user accessing pages" do
         setup do
-          @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 4)
+          @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "user").id)
           UserSession.create(@user)
           get :index
         end
@@ -38,7 +38,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
   
   context "On APPROVE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
       UserSession.create(@user)
       get :approve, :id => Factory(:comatose_page).id
     end
@@ -49,7 +49,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
   
   context "On DENY" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
       UserSession.create(@user)
       get :deny, :id => Factory(:comatose_page).id
     end
@@ -60,7 +60,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
   
   context "When creating a new page" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
       UserSession.create(@user)
       post :new, :page => {
         :parent_id    => 1,
@@ -128,7 +128,7 @@ class ComatoseAdminControllerTest < ActionController::TestCase
     
     context "as an admin" do
       setup do
-        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 1)
+        @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
         UserSession.create(@user)
         post :edit, :id => Factory(:comatose_page).to_param, :page => { }
       end

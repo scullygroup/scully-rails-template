@@ -15,7 +15,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "An unauthorized user" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => 2)
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "publisher").id)
       UserSession.create(@user)
       get :index
     end
@@ -25,7 +25,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "A user who has not been confirmed" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'pending')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'pending', :role_id => Factory(:role, :name => "admin").id)
       get :index
     end
     
@@ -34,7 +34,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "A user who has been denied" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'denied')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'denied', :role_id => Factory(:role, :name => "admin").id)
       get :index
     end
     
@@ -43,7 +43,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On accessing INDEX" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       get :index
     end
@@ -55,7 +55,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On NEW" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       get :new
     end
@@ -67,7 +67,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On CREATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       post :create, :role => { :name => 'writer' }
     end
@@ -79,7 +79,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On failed CREATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       post :create, :role => {:name => nil}
     end
@@ -89,7 +89,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On EDIT" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       get :edit, :id => Factory(:role).id
     end
@@ -101,7 +101,7 @@ class RolesControllerTest < ActionController::TestCase
 
   context "On UPDATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       put :update, :id => Factory(:role).to_param, :role => { }
     end
@@ -112,7 +112,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On failed UPDATE" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       Role.any_instance.stubs(:save).returns(false)
       put :update, :id => Factory(:role).to_param, :role => { }
@@ -123,7 +123,7 @@ class RolesControllerTest < ActionController::TestCase
   
   context "On DESTROY" do
     setup do
-      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed')
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
       post :destroy, :id => Factory(:role).id
     end
