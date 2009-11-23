@@ -1141,7 +1141,6 @@ run "rm -rf app/views/user_verifications"
 run "rm -rf vendor/plugins/comatose_engine/.git"
 
 # stylesheets
-
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/reset.css -O public/stylesheets/reset.css"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/admin.sass -O public/stylesheets/sass/admin.sass"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/theme.sass -O public/stylesheets/sass/theme.sass"
@@ -1154,6 +1153,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-check.png -O public/images/flash-check.png"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-error.png -O public/images/flash-error.png"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-warning.png -O public/images/flash-warning.png"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/spinner.gif -O public/images/spinner.gif"
 
 # controllers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/controllers/application_controller.rb -O app/controllers/application_controller.rb"
@@ -1166,6 +1166,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 
 # helpers
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/helpers/comatose_admin_helper.rb -O app/helpers/comatose_admin_helper.rb"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/helpers/remote_link_renderer.rb -O app/helpers/remote_link_renderer.rb"
 
 # models
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/models/user.rb -O app/models/user.rb"
@@ -1220,6 +1221,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/new.html.haml -O app/views/users/new.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/no_role.html.haml -O app/views/users/no_role.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/show.html.haml -O app/views/users/show.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/users/_users.html.haml -O app/views/users/_users.html.haml"
 
 #tests
 ### factories

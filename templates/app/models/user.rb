@@ -32,4 +32,7 @@ class User < ActiveRecord::Base
     NotifierMailer.deliver_verification_instructions(self)  
   end
   
+  def self.all_users(page)
+    paginate(:page => page, :per_page => 10)
+  end
 end

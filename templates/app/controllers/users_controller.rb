@@ -9,7 +9,12 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = User.all
+    @users = User.all_users(params[:page])
+  
+    respond_to do |format|
+      format.html
+      format.js { render :partial => 'users' }
+    end
   end
   
   def new
