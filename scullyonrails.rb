@@ -34,6 +34,7 @@ gem 'aasm', :lib => 'aasm', :source => 'http://gemcutter.org'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 gem 'metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
+gem 'wysihat-engine', :source => 'http://gemcutter.org'
 
 #freeze!
 rake("gems:install", :sudo => true)
@@ -127,6 +128,9 @@ initializer 'hoptoad.rb',
 end
 }
 
+initializer 'javascript_libraries',
+%q{ActionView::Helpers::AssetTagHelper.register_javascript_expansion :prototype => ["prototype", "scriptaculous"]}
+
 initializer 'mocks.rb', 
 %q{# Rails 2 doesn't like mocks
 
@@ -217,6 +221,8 @@ Rails::Initializer.run do |config|
              :source => 'http://gemcutter.org'
   config.gem 'searchlogic',
              :lib => 'searchlogic',
+             :source => 'http://gemcutter.org'
+  config.gem 'wysihat-engine',
              :source => 'http://gemcutter.org'
                         
   # Only load the plugins named here, in the order given. By default, all plugins 
@@ -940,6 +946,7 @@ file 'lib/tasks/project_setup.rake',
 %Q{namespace :project do
    desc 'Creates radiant pages from html sitemap generated from a Freemind mindmap.'
    task :setup, :needs => :environment do
+     sh "script/generate wysihat"
      sh "script/generate plugin_migration"
      sh "rake db:migrate"
      sleep 1.5
