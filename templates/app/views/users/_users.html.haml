@@ -1,4 +1,4 @@
-= will_paginate :renderer => 'RemoteLinkRenderer', :remote => {:update => 'all-users', :loading => "$('#spinner').show()", :complete => "$('#spinner').hide()"}
+= will_paginate :renderer => 'RemoteLinkRenderer', :remote => {:update => 'all-users', :loading => "jQuery('#spinner').show()", :complete => "jQuery('#spinner').hide()"}
 
 %table.table
   %tr
@@ -40,4 +40,4 @@
         |
         = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
         
-= will_paginate :renderer => 'RemoteLinkRenderer', :remote => {:update => 'all-users', :loading => "$('#spinner').show()", :complete => "$('#spinner').hide()"}
+= will_paginate :renderer => 'RemoteLinkRenderer', :remote => {:update => 'all-users', :loading => "jQuery('#spinner').show()", :complete => "jQuery('#spinner').hide()"}
