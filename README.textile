@@ -115,6 +115,23 @@ To use Prototype, include the following helper in the head of your layout:
   javascript_include_tag :prototype
 </code></pre>
   
+Be sure to uncomment the jQuery.noConflict(); line in <code>plugins/jrails/init.rb</code> if you plan on using jQuery alongside Prototype.
+Also, in the head of your layout file, add the following after referencing your javascript libraries:
+<pre><code>
+  <script type="text/javascript">
+    jQuery.noConflict();
+  </script>
+</code></pre>
+
+An example jQuery function would then be written like this:
+<pre><code>
+  jQuery(document).ready(function($){
+    $('#div').click(function(){
+      $('#other-div').hide();
+    });
+  });
+</code></pre>
+
 There are also a few key helper methods defined in the app that can be used across other models.
 
 <pre><code>
