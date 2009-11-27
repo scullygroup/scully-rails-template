@@ -33,7 +33,7 @@ gem 'formtastic', :lib => 'formtastic', :source => 'http://gemcutter.org'
 gem 'aasm', :lib => 'aasm', :source => 'http://gemcutter.org'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
-gem 'metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
+gem 'mwilden-metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
 gem 'wysihat-engine', :source => 'http://gemcutter.org'
 
 #freeze!
@@ -839,7 +839,7 @@ HOST = 'localhost'
 
 SITE_URL = 'localhost:3000'
 
-config.gem 'metric_fu',
+config.gem 'mwilden-metric_fu',
            :lib => 'metric_fu',
            :source => 'http://gemcutter.org'
 config.gem 'mocha'
@@ -946,11 +946,13 @@ file 'lib/tasks/project_setup.rake',
 %Q{namespace :project do
    desc 'Creates radiant pages from html sitemap generated from a Freemind mindmap.'
    task :setup, :needs => :environment do
-     sh "script/generate wysihat"
      sh "script/generate plugin_migration"
      sh "rake db:migrate"
      sleep 1.5
      sh "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/add_indexes.rb -O db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_add_indexes.rb"
+     sh "rake db:migrate"
+     sleep 1.5
+     sh "script/generate wysihat"
      sh "rake db:migrate"
      sh "rake db:seed"
      
