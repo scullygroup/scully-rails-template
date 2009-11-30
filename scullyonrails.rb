@@ -34,7 +34,7 @@ gem 'aasm', :lib => 'aasm', :source => 'http://gemcutter.org'
 gem 'authlogic', :lib => 'authlogic', :source => 'http://gemcutter.org'
 gem 'searchlogic', :lib => 'searchlogic', :source => 'http://gemcutter.org'
 gem 'mwilden-metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
-gem 'wysihat-engine', :source => 'http://gemcutter.org'
+gem 'bcalloway-wysihat-engine', :source => 'http://gemcutter.org'
 
 #freeze!
 rake("gems:install", :sudo => true)
@@ -222,7 +222,7 @@ Rails::Initializer.run do |config|
   config.gem 'searchlogic',
              :lib => 'searchlogic',
              :source => 'http://gemcutter.org'
-  config.gem 'wysihat-engine',
+  config.gem 'bcalloway-wysihat-engine',
              :source => 'http://gemcutter.org'
                         
   # Only load the plugins named here, in the order given. By default, all plugins 
