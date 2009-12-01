@@ -108,7 +108,7 @@ A before filter that ensures a user cannot access another user's records unless 
 
 h3. Helper Methods
 
-Since this app template uses jRails and jQuery (instead of Prototype), a helper is created that will allow you to include the Prototype libraries instead of jQuery.
+Since this app template uses jRails and jQuery (instead of Prototype), a helper is created that will allow you to include the Prototype libraries instead of jQuery (with jRails, the defaults are currently jQuery).
 
 To use Prototype, include the following helper in the head of your layout:
 <pre><code>

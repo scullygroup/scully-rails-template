@@ -12,7 +12,7 @@
 
 plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git"
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
-plugin 'jrails', :svn => "http://ennerchi.googlecode.com/svn/trunk/plugins/jrails"
+plugin 'jrails', :git => "git://github.com/IamPersistent/jrails.git"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
 plugin 'engines', :git => "git://github.com/lazyatom/engines.git"
 run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/plugins/comatose_engine"
