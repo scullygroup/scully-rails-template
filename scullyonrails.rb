@@ -128,7 +128,7 @@ initializer 'hoptoad.rb',
 end
 }
 
-initializer 'javascript_libraries',
+initializer 'javascript_libraries.rb',
 %q{ActionView::Helpers::AssetTagHelper.register_javascript_expansion :prototype => ["prototype", "scriptaculous"]}
 
 initializer 'mocks.rb', 
