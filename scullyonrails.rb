@@ -223,6 +223,7 @@ Rails::Initializer.run do |config|
              :lib => 'searchlogic',
              :source => 'http://gemcutter.org'
   config.gem 'bcalloway-wysihat-engine',
+             :lib => 'wysihat-engine',
              :source => 'http://gemcutter.org'
                         
   # Only load the plugins named here, in the order given. By default, all plugins 
