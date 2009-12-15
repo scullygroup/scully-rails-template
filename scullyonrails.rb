@@ -1190,7 +1190,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 ### comatose_admin
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_form.html.haml -O app/views/comatose_admin/_form.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_page_list_item.html.haml -O app/views/comatose_admin/_page_list_item.html.haml"
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_sortable.html.haml -O app/views/comatose_admin/_sortable.html.haml"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_sortable.html.erb -O app/views/comatose_admin/_sortable.html.erb"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/_toggle_state.html.haml -O app/views/comatose_admin/_toggle_state.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/delete.html.haml -O app/views/comatose_admin/delete.html.haml"
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/app/views/comatose_admin/edit.html.haml -O app/views/comatose_admin/edit.html.haml"
