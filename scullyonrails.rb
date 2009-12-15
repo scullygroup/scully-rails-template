@@ -1157,7 +1157,7 @@ run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templat
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/stylesheets/sass/screen.sass -O public/stylesheets/sass/screen.sass"
 
 # javascripts
-run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/javascripts/scriptaculous -O public/javascripts/scriptaculous"
+run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/javascripts/scriptaculous.js -O public/javascripts/scriptaculous.js"
 
 #images
 run "wget http://github.com/scullygroup/scully-rails-template/raw/master/templates/public/images/flash-check.png -O public/images/flash-check.png"
