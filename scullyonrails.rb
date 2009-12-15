@@ -37,7 +37,7 @@ gem 'mwilden-metric_fu', :lib => 'metric_fu', :source => 'http://gemcutter.org'
 gem 'bcalloway-wysihat-engine', :source => 'http://gemcutter.org'
 
 #freeze!
-rake("gems:install", :sudo => true)
+#rake("gems:install", :sudo => true)
 rake("gems:unpack")
 rake("gems:build")
 
