@@ -10,6 +10,7 @@
 # PLUGINS
 #====================
 
+plugin 'haml-scaffold', :git => "git://github.com/tobias/haml-scaffold.git"
 plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git"
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :git => "git://github.com/IamPersistent/jrails.git"

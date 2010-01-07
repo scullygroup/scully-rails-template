@@ -57,6 +57,7 @@ When a "writer-level" user creates/edits a page, an email is sent to the user(s)
 h3.  What's installed
 
 *Plugins*
+haml-scaffold, "http://github.com/tobias/haml-scaffold":http://github.com/tobias/haml-scaffold
 hoptoad_notifier, "http://github.com/thoughtbot/hoptoad_notifier.git":http://github.com/thoughtbot/hoptoad_notifier.git
 limerick_rake, "http://github.com/thoughtbot/limerick_rake":http://github.com/thoughtbot/hoptoad_notifier.git
 jrails, "http://code.google.com/p/ennerchi":http://code.google.com/p/ennerchi
