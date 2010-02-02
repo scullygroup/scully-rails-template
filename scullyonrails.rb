@@ -11,7 +11,6 @@
 #====================
 
 plugin 'haml-scaffold', :git => "git://github.com/tobias/haml-scaffold.git"
-plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git"
 plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
 plugin 'jrails', :git => "git://github.com/IamPersistent/jrails.git"
 plugin 'admin_data', :git => "git://github.com/neerajdotname/admin_data.git"
@@ -22,7 +21,7 @@ run "git clone --depth 1 git://github.com/bcalloway/comatose-engine.git vendor/p
 # GEMS
 #====================
 
-gem 'RedCloth', :lib => 'redcloth'
+gem 'hoptoad_notifier'
 gem 'will_paginate', :lib => 'will_paginate', :source => 'http://gemcutter.org'
 gem 'mocha'
 gem 'factory_girl',:lib => 'factory_girl', :source => 'http://gemcutter.org'
@@ -200,8 +199,8 @@ Rails::Initializer.run do |config|
   # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
 
   # Specify gems that this application depends on.
-  config.gem 'RedCloth',
-             :lib => 'redcloth' 
+  config.gem 'hoptoad_notifier',
+             :source => 'http://gemcutter.org'
   config.gem 'will_paginate', 
              :lib => 'will_paginate', 
              :source => 'http://gemcutter.org'
