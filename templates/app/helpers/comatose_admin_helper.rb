@@ -6,8 +6,8 @@ module ComatoseAdminHelper
   
   # Show all available roles in drop-down
   def show_roles
-    @role = Role.name_does_not_equal("user")
-    return select(:page, :role_id, @role.collect {|p| [p.name.capitalize, p.id]})
+    @role = Role.name_not_like_all("admin", "publisher", "writer", "user")
+    return select(:page, :role_id, @role.collect {|p| [p.name.capitalize, p.id]}, { :prompt => "--Select Role--" })
   end
   
   # Used in the Page Form to build an indented drop-down list of pages

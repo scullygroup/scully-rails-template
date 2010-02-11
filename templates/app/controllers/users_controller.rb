@@ -61,12 +61,14 @@ class UsersController < ApplicationController
   
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-
-    respond_to do |format|
+    
+    if @user.id == current_user.id
+      flash[:error] = "You cannot delete yourself!"
+    else
+      @user.destroy
       flash[:notice] = "Account has been deleted"
-      format.html { redirect_to('/users') }
     end
+    redirect_to('/users')
   end
   
 end

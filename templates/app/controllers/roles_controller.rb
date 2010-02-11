@@ -28,8 +28,13 @@ class RolesController < ApplicationController
   def edit
     @role = Role.find(params[:id])
 
-    respond_to do |format|
-      format.html
+    if @role.name == "admin" || @role.name == "publisher" || @role.name == "writer" || @role.name == "user"
+      redirect_to('/roles')
+      flash[:error] = "You cannot modify default roles"
+    else
+      respond_to do |format|
+        format.html
+      end
     end
   end
 

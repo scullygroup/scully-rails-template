@@ -123,6 +123,8 @@ Also, in the head of your layout file, add the following after referencing your 
   </script>
 </code></pre>
 
+_Note: This app template depends on jRails. You may need to tweak the settings in vendor/plugins/jrails/rails/init.rb for jQuery.noConflict();_
+
 An example jQuery function would then be written like this:
 <pre><code>
   jQuery(document).ready(function($){

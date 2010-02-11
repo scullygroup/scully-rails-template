@@ -91,12 +91,23 @@ class RolesControllerTest < ActionController::TestCase
     setup do
       @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
       UserSession.create(@user)
-      get :edit, :id => Factory(:role).id
+      get :edit, :id => Factory(:role, :name => "sales").id
     end
     
     should_respond_with :success
     should_render_with_layout :comatose_admin
     should_render_template :edit
+  end
+
+  context "When trying to edit a default role" do
+    setup do
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
+      UserSession.create(@user)
+      get :edit, :id => Factory(:role).id
+    end
+    
+    should_respond_with :redirect
+    should_set_the_flash_to "You cannot modify default roles"
   end
 
   context "On UPDATE" do

@@ -223,4 +223,15 @@ class UsersControllerTest < ActionController::TestCase
     should_change("Number of users") { User.count }
   end
   
+  context "When trying to delete yourself" do
+    setup do
+      @user = Factory.build(:user, :login => 'bcalloway', :password => '123456', :state => 'confirmed', :role_id => Factory(:role, :name => "admin").id)
+      UserSession.create(@user)
+      post :destroy, :id => @user.id
+    end
+    
+    should_set_the_flash_to "You cannot delete yourself!"
+    should_redirect_to("Users list") { '/users' }
+  end
+  
 end

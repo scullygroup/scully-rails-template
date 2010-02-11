@@ -6,7 +6,27 @@
 %table.table
   %tr
     %th
-      Role Name
+      Role Name      
+    %tr
+      %td
+        Admin
+      %td
+        Built-in system role, full-access
+    %tr
+      %td
+        Publisher
+      %td
+        Built-in system role, full-access to CMS
+    %tr
+      %td
+        Writer
+      %td
+        Built-in system role, read/write privileges to CMS
+    %tr
+      %td
+        User
+      %td
+        Built-in system role, no privileges
 
   - @roles.each do |role|
     %tr
