@@ -14,7 +14,7 @@ class Role < ActiveRecord::Base
   
   # Only show custom writer-level roles, prevents an admin from changing default system roles
   def self.list_all_but_reserved
-    Role.name_not_like_all("admin", "publisher", "writer", "user")
+    Role.name_does_not_equal_all("admin", "publisher", "writer", "user")
   end
   
 end

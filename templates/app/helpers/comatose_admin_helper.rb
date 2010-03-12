@@ -6,7 +6,7 @@ module ComatoseAdminHelper
   
   # Show all available roles in drop-down
   def show_roles
-    @role = Role.name_not_like_all("admin", "publisher", "writer", "user")
+    @role = Role.name_does_not_equal_all("admin", "publisher", "writer", "user")
     return select(:page, :role_id, @role.collect {|p| [p.name.capitalize, p.id]}, { :prompt => "--Select Role--" })
   end
   
