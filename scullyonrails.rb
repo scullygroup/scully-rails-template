@@ -26,6 +26,7 @@ gem 'will_paginate', :lib => 'will_paginate', :source => 'http://gemcutter.org'
 gem 'mocha'
 gem 'factory_girl',:lib => 'factory_girl', :source => 'http://gemcutter.org'
 gem 'shoulda', :lib => 'shoulda', :source => 'http://gemcutter.org'
+gem 'shoulda_addons', :source => 'http://gemcutter.org'
 gem 'paperclip', :lib => 'paperclip', :source => 'http://gemcutter.org'
 gem 'newrelic_rpm', :source => 'http://gemcutter.org'
 gem 'haml', :source => 'http://gemcutter.org'
@@ -850,7 +851,10 @@ config.gem 'factory_girl',
 config.gem 'shoulda', 
           :lib => 'shoulda', 
           :source => 'http://gemcutter.org'
+config.gem 'shoulda_addons', 
+          :source => 'http://gemcutter.org'
 
+require 'shoulda_addons
 require 'factory_girl'
 require 'mocha'
 begin require 'redgreen'; rescue LoadError; end
